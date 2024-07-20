@@ -135,3 +135,42 @@ public static class Utilidades{
 //Solo civilizaciones: 
 //https://aoe2-data-api.herokuapp.com/civs?includeUnits=false&includeTechs=false&includeBuildings=false
 
+//Nombres mediavales
+// {
+//     "nombres": {
+//         "masculinos": [
+//             "Alaric",
+//             "Baldwin",
+//             "Cedric",
+//             "Duncan",
+//             "Edmund",
+//             "Godfrey",
+//             "Halvard",
+//             "Isidore",
+//             "Jareth",
+//             "Lancelot",
+//             "Myrddin",
+//             "Osric",
+//             "Percival",
+//             "Roderic",
+//             "Thaddeus"
+//         ],
+//         "femeninos": [
+//             "Aveline",
+//             "Beatrix",
+//             "Catrin",
+//             "Elowen",
+//             "Fionna",
+//             "Gwendolyn",
+//             "Isolde",
+//             "Leofwyn",
+//             "Morgana",
+//             "Rosalind",
+//             "Seraphina",
+//             "Thea",
+//             "Ysabeau",
+//             "Winifred",
+//             "Zephyra"
+//         ]
+//     }
+// }
