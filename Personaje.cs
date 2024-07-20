@@ -10,6 +10,7 @@ namespace EspacioPersonaje;
 
 public class Personaje{
   //Datos
+  private int id;
   private string? tipo; 
   private string? nombre;
   // private string? apodo;
@@ -24,8 +25,9 @@ public class Personaje{
   private int salud;
 
 
-    public Personaje(string? tipo, string? nombre, string? apodo, DateTime fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
+    public Personaje(int id, string? tipo, string? nombre, string? apodo, DateTime fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
     {
+        this.ID = id;
         this.Tipo = tipo;
         this.Nombre = nombre;
         // this.Apodo = apodo;
@@ -39,6 +41,7 @@ public class Personaje{
         this.Salud = salud;
     }
 
+    public int ID { get => id; set => id = value; }
     public string? Tipo { get => tipo; set => tipo = value; }
     public string? Nombre { get => nombre; set => nombre = value; }
     // public string? Apodo { get => apodo; set => apodo = value; }
@@ -53,6 +56,7 @@ public class Personaje{
 
     //public mostrarPersonaje
     public void MostraPersonaje(){
+        Console.WriteLine("\t\tTipo: "+ ID);
         Console.WriteLine("\t\tTipo: "+ Tipo);
         Console.WriteLine("\t\tNombre: "+ Nombre);
         // Console.WriteLine("\t\tID: "+ ID);
@@ -68,10 +72,41 @@ public class Personaje{
     }
 }
 
-// public static class FabricaDePersonajes{
 
-// }
 
+public static class Utilidades{
+
+        private static readonly Random random = new Random();
+
+        public static int ObtenerIntRandom(int ini, int fin)
+        {
+            return random.Next(ini, fin);
+        }
+
+        public static DateTime FechaAleatoria()
+        {
+            int anio = ObtenerIntRandom(1724, 2025);
+            int mes = ObtenerIntRandom(1, 13);
+            int dia;
+            if(mes == 2){
+                dia = ObtenerIntRandom(1, DateTime.IsLeapYear(anio) ? 30 : 29)
+            } else{
+                dia = ObtenerIntRandom(1, DateTime.DaysInMonth(anio, mes));
+            }
+
+            DateTime fecha = new DateTime(anio, mes, dia);
+            return fecha;
+        }
+
+        public static int ObtenerEdad(DateTime fecha)
+        {
+            if (fecha > DateTime.Today) return -1;
+
+            int edad = DateTime.Today.Year - fecha.Year;
+            if (fecha.Date > DateTime.Today.AddYears(-edad)) edad--;
+            return edad;
+        }
+}
 //Solo civilizaciones: 
 //https://aoe2-data-api.herokuapp.com/civs?includeUnits=false&includeTechs=false&includeBuildings=false
 
