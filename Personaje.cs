@@ -72,7 +72,32 @@ public class Personaje{
     }
 }
 
+public static class FabricaDePersonajes
+    {
+        private static string[] tipos = { "Caballeria", "Infanteria", "Arquero"};
+        private static string[] nombresInfanteria = { "Rey Arturo", " William Wallace", "Carlos Martel"};
+        private static string[] nombresArquero = { "Robin Hood", "Lord de Graville", "Arquero de los Ojos"};
+        private static string[] nombresCaballero = { "Juana de Arco", "Lancelot", "Alexander Nevski" };
 
+
+
+        public static Personaje CrearPersonaje()
+        {
+            int id = Utilidades.ObtenerIntRandom(1, 1000);
+            string tipo = tipos[Utilidades.ObtenerIntRandom(0, tipos.Length)];
+            string nombre = nombres[Utilidades.ObtenerIntRandom(0, nombres.Length)];
+            DateTime fechaNacimiento = Utilidades.FechaAleatoria();
+            int edad = Utilidades.ObtenerEdad(fechaNacimiento);
+            int velocidad = Utilidades.ObtenerIntRandom(1, 101);
+            int destreza = Utilidades.ObtenerIntRandom(1, 101);
+            int fuerza = Utilidades.ObtenerIntRandom(1, 101);
+            int nivel = Utilidades.ObtenerIntRandom(1, 101);
+            int armadura = Utilidades.ObtenerIntRandom(1, 101);
+            int salud = Utilidades.ObtenerIntRandom(1, 101);
+
+            return new Personaje(id, tipo, nombre, fechaNacimiento, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
+        }
+    }
 
 public static class Utilidades{
 
