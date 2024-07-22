@@ -1,11 +1,10 @@
 using System;
 
 namespace EspacioPersonaje;
-// Juego RPG es por turnos
+
 // Diferencia entre campos y propiedades saber bien
 // Clases: personajes, caracteristicas, datos persJson, historial,
 //  fabrica de personajes, estadisticas, combate Daño provocado con if no puede ser negativo
-// Usar apis Fabrica de personajes consumiria una api
 // motor grafico godot
 
 public class Personaje{
@@ -13,7 +12,6 @@ public class Personaje{
   private int id;
   private string? tipo; 
   private string? nombre;
-  // private string? apodo;
   private DateTime fechaNacimiento;
   private int edad;  
   //Caracteristicas
@@ -25,12 +23,11 @@ public class Personaje{
   private int salud;
 
 
-    public Personaje(int id, string? tipo, string? nombre, string? apodo, DateTime fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
+    public Personaje(int id, string? tipo, string? nombre, DateTime fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
     {
         this.ID = id;
         this.Tipo = tipo;
         this.Nombre = nombre;
-        // this.Apodo = apodo;
         this.FechaNacimiento = fechaNacimiento;
         this.Edad = edad;
         this.Velocidad = velocidad;
@@ -44,7 +41,6 @@ public class Personaje{
     public int ID { get => id; set => id = value; }
     public string? Tipo { get => tipo; set => tipo = value; }
     public string? Nombre { get => nombre; set => nombre = value; }
-    // public string? Apodo { get => apodo; set => apodo = value; }
     public DateTime FechaNacimiento { get => fechaNacimiento; set => fechaNacimiento = value; }
     public int Edad { get => edad; set => edad = value; }
     public int Velocidad { get => velocidad; set => velocidad = value; }
@@ -56,10 +52,9 @@ public class Personaje{
 
     //public mostrarPersonaje
     public void MostraPersonaje(){
-        Console.WriteLine("\t\tTipo: "+ ID);
+        Console.WriteLine("\t\tID: "+ ID);
         Console.WriteLine("\t\tTipo: "+ Tipo);
         Console.WriteLine("\t\tNombre: "+ Nombre);
-        // Console.WriteLine("\t\tID: "+ ID);
         Console.WriteLine("\t\tFecha de nacimiento: "+FechaNacimiento.ToString("d")); //Expresado en formato corto
         Console.WriteLine("\t\tEdad: "+Edad);
         Console.WriteLine("\t\tVelocidad: "+Velocidad);
@@ -85,7 +80,7 @@ public static class FabricaDePersonajes
         {
             int id = Utilidades.ObtenerIntRandom(1, 1000);
             string tipo = tipos[Utilidades.ObtenerIntRandom(0, tipos.Length)];
-            string nombre = nombres[Utilidades.ObtenerIntRandom(0, nombres.Length)];
+            string nombre = nombresInfanteria[Utilidades.ObtenerIntRandom(0, nombresInfanteria.Length)];
             DateTime fechaNacimiento = Utilidades.FechaAleatoria();
             int edad = Utilidades.ObtenerEdad(fechaNacimiento);
             int velocidad = Utilidades.ObtenerIntRandom(1, 101);
@@ -114,7 +109,7 @@ public static class Utilidades{
             int mes = ObtenerIntRandom(1, 13);
             int dia;
             if(mes == 2){
-                dia = ObtenerIntRandom(1, DateTime.IsLeapYear(anio) ? 30 : 29)
+                dia = ObtenerIntRandom(1, DateTime.IsLeapYear(anio) ? 30 : 29);
             } else{
                 dia = ObtenerIntRandom(1, DateTime.DaysInMonth(anio, mes));
             }
@@ -134,43 +129,3 @@ public static class Utilidades{
 }
 //Solo civilizaciones: 
 //https://aoe2-data-api.herokuapp.com/civs?includeUnits=false&includeTechs=false&includeBuildings=false
-
-//Nombres mediavales
-// {
-//     "nombres": {
-//         "masculinos": [
-//             "Alaric",
-//             "Baldwin",
-//             "Cedric",
-//             "Duncan",
-//             "Edmund",
-//             "Godfrey",
-//             "Halvard",
-//             "Isidore",
-//             "Jareth",
-//             "Lancelot",
-//             "Myrddin",
-//             "Osric",
-//             "Percival",
-//             "Roderic",
-//             "Thaddeus"
-//         ],
-//         "femeninos": [
-//             "Aveline",
-//             "Beatrix",
-//             "Catrin",
-//             "Elowen",
-//             "Fionna",
-//             "Gwendolyn",
-//             "Isolde",
-//             "Leofwyn",
-//             "Morgana",
-//             "Rosalind",
-//             "Seraphina",
-//             "Thea",
-//             "Ysabeau",
-//             "Winifred",
-//             "Zephyra"
-//         ]
-//     }
-// }
