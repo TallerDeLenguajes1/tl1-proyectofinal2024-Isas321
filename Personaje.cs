@@ -1,4 +1,9 @@
 using System;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EspacioPersonaje;
 
@@ -8,19 +13,19 @@ namespace EspacioPersonaje;
 // motor grafico godot
 
 public class Personaje{
-  //Datos
-  private int id;
-  private string? tipo; 
-  private string? nombre;
-  private DateTime fechaNacimiento;
-  private int edad;  
-  //Caracteristicas
-  private int velocidad;
-  private int destreza;
-  private int fuerza;
-  private int nivel;
-  private int armadura;
-  private int salud;
+    //Datos
+    private int id;
+    private string? tipo; 
+    private string? nombre;
+    private DateTime fechaNacimiento;
+    private int edad;  
+    //Caracteristicas
+    private int velocidad;
+    private int destreza;
+    private int fuerza;
+    private int nivel;
+    private int armadura;
+    private int salud;
 
 
     public Personaje(int id, string? tipo, string? nombre, DateTime fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
@@ -37,6 +42,7 @@ public class Personaje{
         this.Armadura = armadura;
         this.Salud = salud;
     }
+
 
     public int ID { get => id; set => id = value; }
     public string? Tipo { get => tipo; set => tipo = value; }
@@ -67,65 +73,112 @@ public class Personaje{
     }
 }
 
-public static class FabricaDePersonajes
+public static class FabricaDePersonajes{
+    private static string[] tipos = { "Caballeria", "Infanteria", "Arquero"};
+    private static string[] nombresInfanteria = { "Rey Arturo", " William Wallace", "Carlos Martel"};
+    private static string[] nombresArquero = { "Robin Hood", "Lord de Graville", "Arquero de los Ojos"};
+    private static string[] nombresCaballero = { "Juana de Arco", "Lancelot", "Alexander Nevski" };
+
+
+
+    public static Personaje CrearPersonaje()
     {
-        private static string[] tipos = { "Caballeria", "Infanteria", "Arquero"};
-        private static string[] nombresInfanteria = { "Rey Arturo", " William Wallace", "Carlos Martel"};
-        private static string[] nombresArquero = { "Robin Hood", "Lord de Graville", "Arquero de los Ojos"};
-        private static string[] nombresCaballero = { "Juana de Arco", "Lancelot", "Alexander Nevski" };
+        // Cargar nombres desde el archivo JSON
+        string filePath = "nombresMedievales.json";
+        Utilidades.CargarNombresDesdeArchivo(filePath);
 
-
-
-        public static Personaje CrearPersonaje()
+        List<string>? nombresMedievales = Utilidades.ObtenerNombresMedievales();
+        if (nombresMedievales == null || nombresMedievales.Count == 0)
         {
-            int id = Utilidades.ObtenerIntRandom(1, 1000);
-            string tipo = tipos[Utilidades.ObtenerIntRandom(0, tipos.Length)];
-            string nombre = nombresInfanteria[Utilidades.ObtenerIntRandom(0, nombresInfanteria.Length)];
-            DateTime fechaNacimiento = Utilidades.FechaAleatoria();
-            int edad = Utilidades.ObtenerEdad(fechaNacimiento);
-            int velocidad = Utilidades.ObtenerIntRandom(1, 101);
-            int destreza = Utilidades.ObtenerIntRandom(1, 101);
-            int fuerza = Utilidades.ObtenerIntRandom(1, 101);
-            int nivel = Utilidades.ObtenerIntRandom(1, 101);
-            int armadura = Utilidades.ObtenerIntRandom(1, 101);
-            int salud = Utilidades.ObtenerIntRandom(1, 101);
-
-            return new Personaje(id, tipo, nombre, fechaNacimiento, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
+            throw new Exception("No se pudieron cargar los nombres medievales.");
         }
+
+
+        int id = Utilidades.ObtenerIntRandom(1, 1000);
+        string tipo = tipos[Utilidades.ObtenerIntRandom(0, tipos.Length)];
+        // string nombre = nombresInfanteria[Utilidades.ObtenerIntRandom(0, nombresInfanteria.Length)];
+        string nombre = Utilidades.ObtenerNombreAleatorio();
+        DateTime fechaNacimiento = Utilidades.FechaAleatoria();
+        int edad = Utilidades.ObtenerEdad(fechaNacimiento);
+        int velocidad = Utilidades.ObtenerIntRandom(1, 101);
+        int destreza = Utilidades.ObtenerIntRandom(1, 101);
+        int fuerza = Utilidades.ObtenerIntRandom(1, 101);
+        int nivel = Utilidades.ObtenerIntRandom(1, 101);
+        int armadura = Utilidades.ObtenerIntRandom(1, 101);
+        int salud = Utilidades.ObtenerIntRandom(1, 101);
+
+        return new Personaje(id, tipo, nombre, fechaNacimiento, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
     }
+}
 
 public static class Utilidades{
 
-        private static readonly Random random = new Random();
+    private static readonly Random random = new Random();
+    private static List<string>? nombresMedievales;
 
-        public static int ObtenerIntRandom(int ini, int fin)
+    public static void CargarNombresDesdeArchivo(string filePath)
+    {
+        if (File.Exists(filePath))
         {
-            return random.Next(ini, fin);
+            string jsonContent = File.ReadAllText(filePath);
+            Nombres? nombresObject = JsonSerializer.Deserialize<Nombres>(jsonContent);
+            nombresMedievales = nombresObject?.NombresList;
+        }
+        else
+        {
+            Console.WriteLine("El archivo no existe.");
+        }
+    }
+
+    // Método para obtener un nombre aleatorio
+    public static string ObtenerNombreAleatorio()
+    {
+        if (nombresMedievales == null || nombresMedievales.Count == 0)
+        {
+            throw new InvalidOperationException("Los nombres no están cargados o están vacíos.");
+        }
+        return nombresMedievales[ObtenerIntRandom(0, nombresMedievales.Count)];
+    }
+
+    private class Nombres
+    {
+        [JsonPropertyName("nombresMedievales")]
+        public List<string>? NombresList { get; set; }
+    }
+
+    public static int ObtenerIntRandom(int ini, int fin)
+    {
+        return random.Next(ini, fin);
+    }
+
+    public static List<string>? ObtenerNombresMedievales()
+    {
+        return nombresMedievales;
+    }
+
+    public static DateTime FechaAleatoria()
+    {
+        int anio = ObtenerIntRandom(1724, 2025);
+        int mes = ObtenerIntRandom(1, 13);
+        int dia;
+        if(mes == 2){
+            dia = ObtenerIntRandom(1, DateTime.IsLeapYear(anio) ? 30 : 29);
+        } else{
+            dia = ObtenerIntRandom(1, DateTime.DaysInMonth(anio, mes));
         }
 
-        public static DateTime FechaAleatoria()
-        {
-            int anio = ObtenerIntRandom(1724, 2025);
-            int mes = ObtenerIntRandom(1, 13);
-            int dia;
-            if(mes == 2){
-                dia = ObtenerIntRandom(1, DateTime.IsLeapYear(anio) ? 30 : 29);
-            } else{
-                dia = ObtenerIntRandom(1, DateTime.DaysInMonth(anio, mes));
-            }
+        DateTime fecha = new DateTime(anio, mes, dia);
+        return fecha;
+    }
 
-            DateTime fecha = new DateTime(anio, mes, dia);
-            return fecha;
-        }
+    public static int ObtenerEdad(DateTime fecha)
+    {
+        if (fecha > DateTime.Today) return -1;
 
-        public static int ObtenerEdad(DateTime fecha)
-        {
-            if (fecha > DateTime.Today) return -1;
-
-            int edad = DateTime.Today.Year - fecha.Year;
-            if (fecha.Date > DateTime.Today.AddYears(-edad)) edad--;
-            return edad;
-        }
+        int edad = DateTime.Today.Year - fecha.Year;
+        if (fecha.Date > DateTime.Today.AddYears(-edad)) edad--;
+        return edad;
+    }
 }
 //Solo civilizaciones: 
 //https://aoe2-data-api.herokuapp.com/civs?includeUnits=false&includeTechs=false&includeBuildings=false
