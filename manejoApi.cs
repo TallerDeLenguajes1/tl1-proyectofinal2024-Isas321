@@ -12,7 +12,7 @@ namespace EspacioJuegoDeTronos{
       public string  primerNombre { get; set; }
   }
 
-  public class Root
+  public class Casas
   {
       [JsonPropertyName("slug")]
       public string  apellido { get; set; }
