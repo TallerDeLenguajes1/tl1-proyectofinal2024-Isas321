@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace EspacioJuegoDeTronos{
+namespace EspacioCasasJuegoDeTronos{
   public class Miembros
   {
       [JsonPropertyName("name")]
