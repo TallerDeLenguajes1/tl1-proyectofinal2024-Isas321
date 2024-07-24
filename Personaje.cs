@@ -13,7 +13,7 @@ public class Personaje{
     private string   nombreCompleto;
     private int edad;  
     //Caracteristicas
-    private int velocidad;
+    private int velocidadDeCaballo;
     private int destreza;
     private int fuerza;
     private int nivel;
@@ -21,13 +21,13 @@ public class Personaje{
     private int salud;
 
 
-    public Personaje(int id, string  casa, string   nombreCompleto, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
+    public Personaje(int id, string  casa, string   nombreCompleto, int edad, int velocidadDeCaballo, int destreza, int fuerza, int nivel, int armadura, int salud)
     {
         this.ID = id;
         this.Casa = casa;
         this.NombreCompleto =  nombreCompleto;
         this.Edad = edad;
-        this.Velocidad = velocidad;
+        this.VelocidadDeCaballo = velocidadDeCaballo;
         this.Destreza = destreza;
         this.Fuerza = fuerza;
         this.Nivel = nivel;
@@ -40,7 +40,7 @@ public class Personaje{
     public string  Casa { get => casa; set => casa = value; }
     public string   NombreCompleto { get =>  nombreCompleto; set =>  nombreCompleto = value; }
     public int Edad { get => edad; set => edad = value; }
-    public int Velocidad { get => velocidad; set => velocidad = value; }
+    public int VelocidadDeCaballo { get => velocidadDeCaballo; set => velocidadDeCaballo = value; }
     public int Destreza { get => destreza; set => destreza = value; }
     public int Fuerza { get => fuerza; set => fuerza = value; }
     public int Nivel { get => nivel; set => nivel = value; }
@@ -52,7 +52,7 @@ public class Personaje{
         Console.WriteLine("\t\tcasa: "+ Casa);
         Console.WriteLine("\t\tNombre: "+ NombreCompleto);
         Console.WriteLine("\t\tEdad: "+Edad);
-        Console.WriteLine("\t\tVelocidad: "+Velocidad);
+        Console.WriteLine("\t\tVelocidad de su montura: "+velocidadDeCaballo);
         Console.WriteLine("\t\tDestreza: "+Destreza);
         Console.WriteLine("\t\tFuerza: "+Fuerza);
         Console.WriteLine("\t\tNivel: "+Nivel);
@@ -68,14 +68,14 @@ public static class FabricaDePersonajes{
         string casa = nombreDeCasa;
         string nombreCompleto = nombrePersonaje;
         int edad = Utilidades.ObtenerIntRandom(18, 45);
-        int velocidad = Utilidades.ObtenerIntRandom(1, 101);
+        int velocidadDeCaballo = Utilidades.ObtenerIntRandom(1, 101);
         int destreza = Utilidades.ObtenerIntRandom(1, 101);
         int fuerza = Utilidades.ObtenerIntRandom(1, 101);
         int nivel = Utilidades.ObtenerIntRandom(1, 101);
         int armadura = Utilidades.ObtenerIntRandom(1, 101);
         int salud = 100;
 
-        return new Personaje(id, casa, nombreCompleto, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
+        return new Personaje(id, casa, nombreCompleto, edad, velocidadDeCaballo, destreza, fuerza, nivel, armadura, salud);
     }
 }
 
