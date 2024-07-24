@@ -1,23 +1,16 @@
-using System;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using EspacioCasasJuegoDeTronos;
+using consumoApiService;
 namespace EspacioPersonaje;
 
-// Diferencia entre campos y propiedades saber bien
-// Clases: personajes, caracteristicas, datos persJson, historial,
 //  fabrica de personajes, estadisticas, combate Daño provocado con if no puede ser negativo
-// motor grafico godot
 
 public class Personaje{
     //Datos
     private int id;
-    private string  tipo; 
-    private string  nombre;
-    private DateTime fechaNacimiento;
+    private string  casa; 
+    private string   nombreCompleto;
     private int edad;  
     //Caracteristicas
     private int velocidad;
@@ -28,12 +21,11 @@ public class Personaje{
     private int salud;
 
 
-    public Personaje(int id, string  tipo, string  nombre, DateTime fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
+    public Personaje(int id, string  casa, string   nombreCompleto, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
     {
         this.ID = id;
-        this.Tipo = tipo;
-        this.Nombre = nombre;
-        this.FechaNacimiento = fechaNacimiento;
+        this.Casa = casa;
+        this.NombreCompleto =  nombreCompleto;
         this.Edad = edad;
         this.Velocidad = velocidad;
         this.Destreza = destreza;
@@ -45,9 +37,8 @@ public class Personaje{
 
     //Cuidar los set y get porque lo publico pueden acceder de cualquier parte
     public int ID { get => id; set => id = value; }
-    public string  Tipo { get => tipo; set => tipo = value; }
-    public string  Nombre { get => nombre; set => nombre = value; }
-    public DateTime FechaNacimiento { get => fechaNacimiento; set => fechaNacimiento = value; }
+    public string  Casa { get => casa; set => casa = value; }
+    public string   NombreCompleto { get =>  nombreCompleto; set =>  nombreCompleto = value; }
     public int Edad { get => edad; set => edad = value; }
     public int Velocidad { get => velocidad; set => velocidad = value; }
     public int Destreza { get => destreza; set => destreza = value; }
@@ -58,9 +49,8 @@ public class Personaje{
 
     public void MostraPersonaje(){
         Console.WriteLine("\t\tID: "+ ID);
-        Console.WriteLine("\t\tTipo: "+ Tipo);
-        Console.WriteLine("\t\tNombre: "+ Nombre);
-        Console.WriteLine("\t\tFecha de nacimiento: "+FechaNacimiento.ToString("d")); //Expresado en formato corto
+        Console.WriteLine("\t\tcasa: "+ Casa);
+        Console.WriteLine("\t\tNombre: "+ NombreCompleto);
         Console.WriteLine("\t\tEdad: "+Edad);
         Console.WriteLine("\t\tVelocidad: "+Velocidad);
         Console.WriteLine("\t\tDestreza: "+Destreza);
@@ -72,14 +62,12 @@ public class Personaje{
 }
 
 public static class FabricaDePersonajes{
-    private static string[] tipos = { "Caballeria", "Infanteria"};
-    public static Personaje CrearPersonaje(int identificador)
+    public static Personaje CrearPersonaje(int identificador, string nombreDeCasa, string nombrePersonaje)
     {
         int id = identificador;
-        string tipo = tipos[Utilidades.ObtenerIntRandom(0, tipos.Length)];
-        string  nombre = NombresJson.ObtenerNombreAleatorio();
-        DateTime fechaNacimiento = Utilidades.FechaAleatoria();
-        int edad = Utilidades.ObtenerEdad(fechaNacimiento);
+        string casa = nombreDeCasa;
+        string nombreCompleto = nombrePersonaje;
+        int edad = Utilidades.ObtenerIntRandom(18, 45);
         int velocidad = Utilidades.ObtenerIntRandom(1, 101);
         int destreza = Utilidades.ObtenerIntRandom(1, 101);
         int fuerza = Utilidades.ObtenerIntRandom(1, 101);
@@ -87,84 +75,25 @@ public static class FabricaDePersonajes{
         int armadura = Utilidades.ObtenerIntRandom(1, 101);
         int salud = 100;
 
-        return new Personaje(id, tipo, nombre, fechaNacimiento, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
+        return new Personaje(id, casa, nombreCompleto, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
     }
 }
 
 public static class Utilidades{
-
     private static readonly Random random = new Random();
  
     public static int ObtenerIntRandom(int ini, int fin)
     {
         return random.Next(ini, fin);
     }
-
-    public static DateTime FechaAleatoria()
-    {
-        int anio = ObtenerIntRandom(1724, 2025);
-        int mes = ObtenerIntRandom(1, 13);
-        int dia;
-        if(mes == 2){
-            dia = ObtenerIntRandom(1, DateTime.IsLeapYear(anio) ?  30 : 29);
-        } else{
-            dia = ObtenerIntRandom(1, DateTime.DaysInMonth(anio, mes));
-        }
-
-        DateTime fecha = new DateTime(anio, mes, dia);
-        return fecha;
-    }
-
-    public static int ObtenerEdad(DateTime fecha)
-    {
-        if (fecha > DateTime.Today) return -1;
-
-        int edad = DateTime.Today.Year - fecha.Year;
-        if (fecha.Date > DateTime.Today.AddYears(-edad)) edad--;
-        return edad;
-    }
 }
 
 
-public static class NombresJson{
-    private static List<string>  nombresMedievales;
-    public static void CargarNombres()
-    {
-        string filePath = "nombresMedievales.json";
-        if (File.Exists(filePath))
-        {
-            string jsonContent = File.ReadAllText(filePath);
-            Nombres  nombresObject = JsonSerializer.Deserialize<Nombres>(jsonContent);
-            nombresMedievales = nombresObject .NombresList;
-        }
-        else
-        {
-            Console.WriteLine("El archivo no existe.");
-        }
-    }
-
-
-    private class Nombres
-    {
-        [JsonPropertyName("nombresMedievales")]
-        public List<string>  NombresList { get; set; }
-    }
-
-    public static List<string>  ObtenerNombresMedievales()
-    {
-        if (nombresMedievales == null || nombresMedievales.Count == 0)
-        {
-            throw new Exception("No se pudieron cargar los nombres medievales.");
-        }
-        return nombresMedievales;
-    }
-
-    public static string  ObtenerNombreAleatorio(){
-        CargarNombres();
-        List<string>  nombresMedievales = ObtenerNombresMedievales();
-        string  nombre = nombresMedievales  [Utilidades.ObtenerIntRandom(0, nombresMedievales.Count)];
-        
-        return nombre;
+public static class CasasNobles{    
+    public static async Task <List<Casas>> ObtenerCasasNobles(){
+        CasasJuegoDeTronosService apiService = new CasasJuegoDeTronosService();
+        var casasNobles = await apiService.GetCasasJuegoDeTronosAsync();
+        return casasNobles;
     }
 }
 
@@ -176,30 +105,27 @@ public static class PersonajesJson{
         Console.WriteLine("Exito al guardar en: " + nombreArchivo);
     }
 
-    public static List<Personaje>  LeerPersonajes(string nombreArchivo){
+    public static async Task<List<Personaje>> LeerPersonajesAsync(string nombreArchivo){
         if (ExistenPersonajes(nombreArchivo)){
             string jsonContenido = File.ReadAllText(nombreArchivo);
-            List<Personaje>  personajes = JsonSerializer.Deserialize<List<Personaje>>(jsonContenido);
+            List<Personaje> personajes = JsonSerializer.Deserialize<List<Personaje>>(jsonContenido);
             return personajes;
         }
         else{
-            Console.WriteLine("\nSe crearon 10 personajes");
-            List <Personaje> personajes = new List<Personaje>();
-            for (int i = 0; i < 10; i++)
-            {
-               personajes.Add(FabricaDePersonajes.CrearPersonaje(i+1));
+            List<Personaje> personajes = new List<Personaje>();
+            List<Casas> casas = await CasasNobles.ObtenerCasasNobles();
+   
+            for (int i = 0; i < casas.Count; i++){
+                personajes.Add(FabricaDePersonajes.CrearPersonaje(i+1, casas[i].nombreDeCasa, casas[i].miembros[0].nombreCompleto));
             }
             GuardarPersonajes(personajes, nombreArchivo);
+            Console.WriteLine("\nSe crearon: "+casas.Count+" casas");
             return personajes;
         }
     }
 
-    public static bool ExistenPersonajes (string nombreArchivo){
-        if(File.Exists(nombreArchivo) && new FileInfo(nombreArchivo).Length > 0){
-            return true;
-        } else{
-            return false;
-        }
+    public static bool ExistenPersonajes(string nombreArchivo){
+        return File.Exists(nombreArchivo) && new FileInfo(nombreArchivo).Length > 0;
     }
 }
 
