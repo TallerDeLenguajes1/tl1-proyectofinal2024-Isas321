@@ -20,9 +20,7 @@ class Program
         do
         {   
             Console.Clear();
-            menu = Menu(); //Mostrar Menu principal
-            // Console.WriteLine("Presione enter para continuar.");
-            // Console.ReadKey();
+            menu = Menu();
             Console.Clear();
             switch (menu)
             {
@@ -36,10 +34,62 @@ class Program
                     }
                     Console.WriteLine("\nPresione una tecla para volver al menu");
                     Console.ReadKey();
-
                     break;
                 case 2:
-                    Console.WriteLine("\nOpcion 2");
+                    int monto, participante;
+                    char confirmacion;
+
+                    personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
+                    Personaje caballero1, caballero2;
+                    caballero1=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
+                    do
+                    {
+                      caballero2=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
+                    } while (caballero1==caballero2);
+
+                    Console.WriteLine("Los caballeros que participaran en la justa son: ");
+                    Console.WriteLine("");
+                    caballero1.MostraPersonaje();
+                    Console.WriteLine("");
+                    caballero2.MostraPersonaje();
+
+                    Console.WriteLine("\nDesea apostar por un participante?");
+                    Console.Write("Si (s) / No (cualquier tecla): ");
+                    confirmacion = Console.ReadKey().KeyChar; 
+                    Console.WriteLine();
+
+                    if(confirmacion=='s' || confirmacion=='S')
+                    {
+                      Console.WriteLine("\nPor cual apostara?");
+                      Console.WriteLine(caballero1.NombreCompleto+"Particimante numero: "+caballero1.ID);
+                      Console.WriteLine("ó");
+                      Console.WriteLine(caballero2.NombreCompleto+"Particimante numero: "+caballero2.ID);
+                      do{
+                        Console.Write("\nIngrese numero del participante: ");
+                        participante=IngresarEntero();
+                      } while (participante == -999 || (participante != caballero1.ID && participante != caballero2.ID)); 
+                      do
+                      {
+                        do{
+                          Console.Write("\nIngrese monto entero que desea apostar: ");
+                          monto=IngresarEntero();
+                        } while (monto==-999);  
+                        Console.WriteLine("El monto que desea apostar es: "+monto);
+                        Console.Write("Es correcto? Si (s) / No (cualquier tecla): ");
+                        confirmacion = Console.ReadKey().KeyChar; 
+                        Console.WriteLine();
+                      } while (confirmacion != 'S' && confirmacion != 's');
+
+                      // Console.WriteLine("\nApuesta: "+monto+" a "+personajes[participante-1]);
+                       Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
+                    } else{
+                      Console.WriteLine("\nNo se realizaron apuestas...");
+                    }
+
+                    Console.WriteLine("\nPresione una tecla para volver al menu");
+                    Console.ReadKey();
+
+                    
                     break;
                 case 3:
                     Console.WriteLine("\nOpcion 3");
