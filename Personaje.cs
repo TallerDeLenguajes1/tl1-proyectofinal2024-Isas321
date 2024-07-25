@@ -48,9 +48,9 @@ public class Personaje{
     public int Salud { get => salud; set => salud = value; }
 
     public void MostraPersonaje(){
-        Console.WriteLine("\t\tID: "+ ID);
-        Console.WriteLine("\t\tcasa: "+ Casa);
+        Console.WriteLine("\t\tCaballero numero["+ID+"]");
         Console.WriteLine("\t\tNombre: "+ NombreCompleto);
+        Console.WriteLine("\t\tCasa: "+ Casa);
         Console.WriteLine("\t\tEdad: "+Edad);
         Console.WriteLine("\t\tVelocidad de su montura: "+velocidadDeCaballo);
         Console.WriteLine("\t\tDestreza: "+Destreza);
@@ -118,13 +118,9 @@ public static class PersonajesJson{
             for (int i = 0; i < casas.Count; i++){
                 personajes.Add(FabricaDePersonajes.CrearPersonaje(i+1, casas[i].nombreDeCasa, casas[i].miembros[0].nombreCompleto));
             }
+            Console.WriteLine("\nFalta de datos...");
+            Console.WriteLine("Se crearon: "+casas.Count+" casas nobles");
             GuardarPersonajes(personajes, nombreArchivo);
-            Console.WriteLine("\nSe crearon: "+casas.Count+" casas");
-            foreach (var personaje in personajes)
-            {
-                Console.WriteLine("");
-                personaje.MostraPersonaje();
-            }
             return personajes;
         }
     }
