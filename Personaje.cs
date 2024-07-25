@@ -120,6 +120,11 @@ public static class PersonajesJson{
             }
             GuardarPersonajes(personajes, nombreArchivo);
             Console.WriteLine("\nSe crearon: "+casas.Count+" casas");
+            foreach (var personaje in personajes)
+            {
+                Console.WriteLine("");
+                personaje.MostraPersonaje();
+            }
             return personajes;
         }
     }
