@@ -32,7 +32,7 @@ class Program
                       Console.WriteLine("");
                       personaje.MostraPersonaje();
                     }
-                    Console.WriteLine("\nPresione una tecla para volver al menu");
+                    Console.Write("\nPresione una tecla para volver al menu...");
                     Console.ReadKey();
                     break;
                 case 2:
@@ -60,10 +60,10 @@ class Program
 
                     if(confirmacion=='s' || confirmacion=='S')
                     {
-                      Console.WriteLine("\nPor cual apostara?");
-                      Console.WriteLine(caballero1.NombreCompleto+"Particimante numero: "+caballero1.ID);
-                      Console.WriteLine("ó");
-                      Console.WriteLine(caballero2.NombreCompleto+"Particimante numero: "+caballero2.ID);
+                      Console.WriteLine("\nPor cual apostara?\n");
+                      Console.WriteLine("\t"+caballero1.NombreCompleto+" con numero: "+caballero1.ID);
+                      Console.WriteLine("\tó");
+                      Console.WriteLine("\t"+caballero2.NombreCompleto+" con numero: "+caballero2.ID);
                       do{
                         Console.Write("\nIngrese numero del participante: ");
                         participante=IngresarEntero();
@@ -79,17 +79,15 @@ class Program
                         confirmacion = Console.ReadKey().KeyChar; 
                         Console.WriteLine();
                       } while (confirmacion != 'S' && confirmacion != 's');
-
-                      // Console.WriteLine("\nApuesta: "+monto+" a "+personajes[participante-1]);
-                       Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
+                      Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
+                      Console.Write("\nCOMIENZA LA JUSTA!");
+                      RealizarEnfrentamiento(caballero1, caballero2);
                     } else{
                       Console.WriteLine("\nNo se realizaron apuestas...");
                     }
 
-                    Console.WriteLine("\nPresione una tecla para volver al menu");
-                    Console.ReadKey();
-
-                    
+                    Console.Write("\nPresione una tecla para volver al menu... ");
+                    Console.ReadKey();                    
                     break;
                 case 3:
                     Console.WriteLine("\nOpcion 3");
@@ -134,7 +132,7 @@ class Program
         Console.WriteLine("Analiza bien sus fortalezas y ten en cuenta que cualquiera puede tener un mal dia.");
         Console.WriteLine("¡Que comience la diversión y la intriga!");
         Console.WriteLine("\n\n");
-        Console.WriteLine("Presione una tecla para comenzar");
+        Console.Write("Presione una tecla para comenzar... ");
         Console.ReadKey();
         Console.Clear();
         Console.WriteLine("\n\n");
@@ -152,7 +150,7 @@ class Program
       op = IngresarEntero();
       if(op < 1 || op > 4){
           Console.WriteLine("\nOpcion incorrecta");
-          Console.WriteLine("Presione enter para continuar");
+          Console.Write("Presione enter para continuar...");
           Console.ReadKey();
           Console.Clear();
       }
@@ -160,14 +158,73 @@ class Program
     return op;
 }
 
-    static int IngresarEntero(){
-      int num;
-      if(int.TryParse(Console.ReadLine(), out num)){
-        return num;
-      } else{
-        return -999;
-      }
+  static int IngresarEntero(){
+    int num;
+    if(int.TryParse(Console.ReadLine(), out num)){
+      return num;
+    } else{
+      return -999;
     }
+  }
+
+  static Personaje RealizarEnfrentamiento(Personaje caballero1, Personaje caballero2)
+  {
+      int carrera = 0;
+      do
+      {
+        carrera++;
+        Console.WriteLine($"\nCarrera numero [{carrera}]");
+        int danioCaballero1 = CalcularDanio(caballero1, caballero2);
+        caballero2.Salud -= danioCaballero1;
+        Console.WriteLine($"{caballero1.NombreCompleto} ataca a {caballero2.NombreCompleto} y provoca {danioCaballero1} puntos de daño.");
+        Console.WriteLine($"{caballero2.NombreCompleto} tiene {caballero2.Salud} puntos de salud restantes.");
+
+        if (caballero2.Salud <= 0)
+        {
+            Console.WriteLine($"\n{caballero2.NombreCompleto} ha sido derrotado. ¡{caballero1.NombreCompleto} es el ganador!");
+            return caballero1;
+        }
+
+        int danioCaballero2 = CalcularDanio(caballero2, caballero1);
+        caballero1.Salud -= danioCaballero2;
+        Console.WriteLine($"\n{caballero2.NombreCompleto} ataca a {caballero1.NombreCompleto} y provoca {danioCaballero2} puntos de daño.");
+        Console.WriteLine($"{caballero1.NombreCompleto} tiene {caballero1.Salud} puntos de salud restantes.");
+
+        if (caballero1.Salud <= 0)
+        {
+            Console.WriteLine($"\n{caballero1.NombreCompleto} ha sido derrotado. ¡{caballero2.NombreCompleto} es el ganador!");
+            return caballero2;
+        }
+
+      } while (carrera<5);
+      if (caballero1.Salud > caballero2.Salud)
+      {
+          Console.WriteLine($"\n¡{caballero1.NombreCompleto} es el ganador con más salud restante!");
+          return caballero1;
+      }
+      else if (caballero2.Salud > caballero1.Salud)
+      {
+          Console.WriteLine($"\n¡{caballero2.NombreCompleto} es el ganador con más salud restante!");
+          return caballero2;
+      }
+      Console.WriteLine("\n¡El enfrentamiento termina en empate!");
+      return null;
+  }
+
+  static int CalcularDanio(Personaje atacante, Personaje defensor)
+  {
+      int ataque = atacante.Destreza * atacante.Fuerza * atacante.Nivel;
+      int efectividad = Utilidades.ObtenerIntRandom(1, 101);
+      int defensa = defensor.Armadura * defensor.VelocidadDeCaballo;
+      const int constanteDeAjuste = 500;
+      int danioProvocado = ((ataque * efectividad) - defensa) / constanteDeAjuste;
+
+      if (danioProvocado < 0)
+      {
+          danioProvocado = 0; // Asegurar que el daño no sea negativo
+      }
+      return danioProvocado;
+  }
 
 }
 
