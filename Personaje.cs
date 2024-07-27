@@ -71,7 +71,7 @@ public static class FabricaDePersonajes{
         int velocidadDeCaballo = Utilidades.ObtenerIntRandom(1, 11);
         int destreza = Utilidades.ObtenerIntRandom(1, 6);
         int fuerza = Utilidades.ObtenerIntRandom(1, 11);
-        int nivel = 0;
+        int nivel = 1;
         int armadura = Utilidades.ObtenerIntRandom(1, 10);
         int salud = 100;
 
@@ -102,7 +102,7 @@ public static class PersonajesJson{
     public static void GuardarPersonajes(List<Personaje> personajes, string nombreArchivo){
         string jsonPersonajes = JsonSerializer.Serialize(personajes);
         File.WriteAllText(nombreArchivo, jsonPersonajes);
-        Console.WriteLine("Exito al guardar en: " + nombreArchivo);
+        // Console.WriteLine("Exito al guardar en: " + nombreArchivo);
     }
 
     public static async Task<List<Personaje>> LeerPersonajesAsync(string nombreArchivo){
@@ -118,8 +118,8 @@ public static class PersonajesJson{
             for (int i = 0; i < casas.Count; i++){
                 personajes.Add(FabricaDePersonajes.CrearPersonaje(i+1, casas[i].nombreDeCasa, casas[i].miembros[0].nombreCompleto));
             }
-            Console.WriteLine("\nFalta de datos...");
-            Console.WriteLine("Se crearon: "+casas.Count+" casas nobles");
+            // Console.WriteLine("\nFalta de datos...");
+            // Console.WriteLine("Se crearon: "+casas.Count+" casas nobles");
             GuardarPersonajes(personajes, nombreArchivo);
             return personajes;
         }
