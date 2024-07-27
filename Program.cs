@@ -15,7 +15,7 @@ class Program
         await EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(3));
         Console.Clear();
         Presentacion();
-            
+        personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
         int menu;
         do
         {   
@@ -25,7 +25,6 @@ class Program
             switch (menu)
             {
                 case 1:
-                    personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
                     Console.WriteLine("\n\nLista de Caballeros que pueden participar en la Justa: ");
                     foreach (var personaje in personajes)
                     {
@@ -39,7 +38,6 @@ class Program
                     int monto, participante;
                     char confirmacion;
 
-                    personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
                     Personaje caballero1, caballero2;
                     caballero1=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
                     do
@@ -213,6 +211,7 @@ class Program
 
   static int CalcularDanio(Personaje atacante, Personaje defensor)
   {
+      
       int ataque = atacante.Destreza * atacante.Fuerza * atacante.Nivel;
       int efectividad = Utilidades.ObtenerIntRandom(1, 101);
       int defensa = defensor.Armadura * defensor.VelocidadDeCaballo;
@@ -227,6 +226,4 @@ class Program
   }
 
 }
-
-
 
