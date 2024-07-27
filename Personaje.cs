@@ -68,11 +68,11 @@ public static class FabricaDePersonajes{
         string casa = nombreDeCasa;
         string nombreCompleto = nombrePersonaje;
         int edad = Utilidades.ObtenerIntRandom(18, 45);
-        int velocidadDeCaballo = Utilidades.ObtenerIntRandom(1, 101);
-        int destreza = Utilidades.ObtenerIntRandom(1, 101);
-        int fuerza = Utilidades.ObtenerIntRandom(1, 101);
-        int nivel = Utilidades.ObtenerIntRandom(1, 101);
-        int armadura = Utilidades.ObtenerIntRandom(1, 101);
+        int velocidadDeCaballo = Utilidades.ObtenerIntRandom(1, 11);
+        int destreza = Utilidades.ObtenerIntRandom(1, 6);
+        int fuerza = Utilidades.ObtenerIntRandom(1, 11);
+        int nivel = 0;
+        int armadura = Utilidades.ObtenerIntRandom(1, 10);
         int salud = 100;
 
         return new Personaje(id, casa, nombreCompleto, edad, velocidadDeCaballo, destreza, fuerza, nivel, armadura, salud);
