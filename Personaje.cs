@@ -71,7 +71,7 @@ public static class FabricaDePersonajes{
         int velocidad = Utilidades.ObtenerIntRandom(1, 11);
         int destreza = Utilidades.ObtenerIntRandom(1, 6);
         int fuerza = Utilidades.ObtenerIntRandom(1, 11);
-        int nivel = 10;
+        int nivel = 1;
         int armadura = Utilidades.ObtenerIntRandom(1, 11);
         int salud = 100;
 
