@@ -77,8 +77,3 @@ namespace EspacioJuegoDeCaballeros;
       return danioProvocado;
   }
     }
-
-
-
-
-// }
