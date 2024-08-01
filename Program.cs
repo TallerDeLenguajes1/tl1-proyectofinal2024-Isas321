@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using consumoApiService;
 using EspacioImagenes;
 using EspacioPersonaje;
+using EspacioInterfaz;
 //Task es una tarea, una operacion asincronicas
 class Program
 {
@@ -12,15 +13,15 @@ class Program
         List<Personaje> personajes = new List<Personaje>();
         Imagenes.caballero();
         Console.WriteLine("\n\t\t\t\t\t\t\tPRESIONE UNA TECLA PARA JUGAR");
-        await EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(3));
+        await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(3));
         Console.Clear();
-        Presentacion();
+        Interfaz.Presentacion();
         personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
         int menu;
         do
         {   
             Console.Clear();
-            menu = Menu();
+            menu = Interfaz.Menu();
             Console.Clear();
             switch (menu)
             {
@@ -64,13 +65,13 @@ class Program
                       Console.WriteLine("\t"+caballero2.NombreCompleto+" con numero: "+caballero2.ID);
                       do{
                         Console.Write("\nIngrese numero del participante: ");
-                        participante=IngresarEntero();
+                        participante=Interfaz.IngresarEntero();
                       } while (participante == -999 || (participante != caballero1.ID && participante != caballero2.ID)); 
                       do
                       {
                         do{
                           Console.Write("\nIngrese monto entero que desea apostar: ");
-                          monto=IngresarEntero();
+                          monto=Interfaz.IngresarEntero();
                         } while (monto==-999);  
                         Console.WriteLine("El monto que desea apostar es: "+monto);
                         Console.Write("Es correcto? Si (s) / No (cualquier tecla): ");
@@ -108,62 +109,11 @@ class Program
         } while (menu != 4);
 
         
-        personajes  = await PersonajesJson.LeerPersonajesAsync("personajes.json");
+        
     }
 
-    static async Task EsperarPorTeclaOPorTiempoAgotado(TimeSpan tiempoDeEspera)
-    {
-        Task tareaDePresiónDeTecla = Task.Run(() => Console.ReadKey(true));
-        Task tareaDeEspera = Task.Delay(tiempoDeEspera);
-        Task tareaCompletada = await Task.WhenAny(tareaDePresiónDeTecla, tareaDeEspera);
-        //  await se usa para esperar de manera asíncrona a que se complete la tarea devuelta por Task.WhenAny. 
-        //  La ejecución del método se suspende aquí y se reanuda cuando una de las tareas 
-        //  (tareaPresionDeTecla o tareaDeEspera) se haya completado.
-    }
 
-    static void Presentacion(){
-      Console.WriteLine("\n\n");
-        Console.WriteLine("¡Bienvenido a 'Apuestas de Juego de Tronos'!");
-        Console.WriteLine("Un emocionante juego de apuestas.");
-        Console.WriteLine("Elige a uno de los personajes de Juego de Tronos.");
-        Console.WriteLine("Apuesta por su victoria en Justas de caballeros.");
-        Console.WriteLine("Analiza bien sus fortalezas y ten en cuenta que cualquiera puede tener un mal dia.");
-        Console.WriteLine("¡Que comience la diversión y la intriga!");
-        Console.WriteLine("\n\n");
-        Console.Write("Presione una tecla para comenzar... ");
-        Console.ReadKey();
-        Console.Clear();
-        Console.WriteLine("\n\n");
-    }
 
-    static int Menu(){
-    int op;
-    do{
-      Console.WriteLine("\t\t\t\t\t========    MENU    ========\n");
-      Console.WriteLine("\t\t\t\t\t 1- Lista de caballeros");
-      Console.WriteLine("\t\t\t\t\t 2- Apostar en una Justa de caballeros");
-      Console.WriteLine("\t\t\t\t\t 3- Historial de ganadores");
-      Console.WriteLine("\t\t\t\t\t 4- Salir\n");
-      Console.Write("Ingresar opcion: ");
-      op = IngresarEntero();
-      if(op < 1 || op > 4){
-          Console.WriteLine("\nOpcion incorrecta");
-          Console.Write("Presione enter para continuar...");
-          Console.ReadKey();
-          Console.Clear();
-      }
-    }while(op < 1 || op > 4);
-    return op;
-}
-
-  static int IngresarEntero(){
-    int num;
-    if(int.TryParse(Console.ReadLine(), out num)){
-      return num;
-    } else{
-      return -999;
-    }
-  }
 
   static Personaje RealizarEnfrentamiento(Personaje caballero1, Personaje caballero2)
   {
@@ -174,6 +124,9 @@ class Program
         Console.WriteLine($"\nCarrera numero [{carrera}]");
         int danioCaballero1 = CalcularDanio(caballero1, caballero2);
         caballero2.Salud -= danioCaballero1;
+        if(caballero2.Salud<0){
+          caballero2.Salud=0;
+        }
         Console.WriteLine($"{caballero1.NombreCompleto} ataca a {caballero2.NombreCompleto} y provoca {danioCaballero1} puntos de daño.");
         Console.WriteLine($"{caballero2.NombreCompleto} tiene {caballero2.Salud} puntos de salud restantes.");
 
@@ -185,6 +138,9 @@ class Program
 
         int danioCaballero2 = CalcularDanio(caballero2, caballero1);
         caballero1.Salud -= danioCaballero2;
+        if(caballero1.Salud<0){
+          caballero1.Salud=0;
+        }
         Console.WriteLine($"\n{caballero2.NombreCompleto} ataca a {caballero1.NombreCompleto} y provoca {danioCaballero2} puntos de daño.");
         Console.WriteLine($"{caballero1.NombreCompleto} tiene {caballero1.Salud} puntos de salud restantes.");
 
@@ -195,6 +151,7 @@ class Program
         }
 
       } while (carrera<5);
+
       if (caballero1.Salud > caballero2.Salud)
       {
           Console.WriteLine($"\n¡{caballero1.NombreCompleto} es el ganador con más salud restante!");
@@ -214,8 +171,8 @@ class Program
       
       int ataque = atacante.Destreza * atacante.Fuerza * atacante.Nivel;
       int efectividad = Utilidades.ObtenerIntRandom(1, 101);
-      int defensa = defensor.Armadura * defensor.VelocidadDeCaballo;
-      const int constanteDeAjuste = 500;
+      int defensa = defensor.Armadura * defensor.Velocidad;
+      const int constanteDeAjuste = 400;
       int danioProvocado = ((ataque * efectividad) - defensa) / constanteDeAjuste;
 
       if (danioProvocado < 0)
