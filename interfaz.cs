@@ -6,20 +6,20 @@ public class Interfaz{
     do{
       Console.WriteLine("\t\t\t\t\t========    MENU    ========\n");
       Console.WriteLine("\t\t\t\t\t 1- Lista de caballeros");
-      Console.WriteLine("\t\t\t\t\t 2- Apostar en una Justa de caballeros");
+      Console.WriteLine("\t\t\t\t\t 2- Participar en el torneo");
       Console.WriteLine("\t\t\t\t\t 3- Historial de ganadores");
       Console.WriteLine("\t\t\t\t\t 4- Salir\n");
       Console.Write("Ingresar opcion: ");
       op = IngresarEntero();
-      if(op < 1 || op > 4){
+      if(op < 1 || op > 5){
           Console.WriteLine("\nOpcion incorrecta");
           Console.Write("Presione enter para continuar...");
           Console.ReadKey();
           Console.Clear();
       }
-    }while(op < 1 || op > 4);
+    }while(op < 1 || op > 5);
     return op;
-}
+  }
   public static int IngresarEntero(){
     int num;
     if(int.TryParse(Console.ReadLine(), out num)){
