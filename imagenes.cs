@@ -1,3 +1,5 @@
+using EspacioPersonaje;
+
 namespace EspacioImagenes;
 
 class Imagenes(){
@@ -46,5 +48,101 @@ class Imagenes(){
         Console.Write(text2);
         Console.ForegroundColor = originalColor;
         Console.WriteLine();
+    }
+
+
+
+
+}
+
+public class TablaDePosiciones{
+    public static string AjustarNombre(string nombre)
+    {
+    int fixedWidth = 20; 
+        if (nombre.Length > fixedWidth - 2)
+        {
+            return nombre.Substring(0, fixedWidth - 5) + "...";
+        }
+        return nombre.PadRight(fixedWidth);
+    }
+    public static void Semifinal(List<Personaje> ListaDeCaballeros)
+    {    
+    int fixedWidth = 20; 
+    string border = new string('-', fixedWidth);
+    Console.WriteLine($@"
+    ┌{border}┐
+    |{AjustarNombre(ListaDeCaballeros[0].NombreCompleto)}|-----┐
+    └{border}┘     |      ┌----------------------┐ 
+                               ├----- |                      |-----┐
+    ┌{border}┐     |      └----------------------┘     |
+    |{AjustarNombre(ListaDeCaballeros[2].NombreCompleto)}|-----┘                                   |
+    └{border}┘                                         |      ┌{border}┐
+                                                                   ├----- |                    |
+    ┌{border}┐                                         |      └{border}┘
+    |{AjustarNombre(ListaDeCaballeros[4].NombreCompleto)}|-----┐                                   |
+    └{border}┘     |      ┌----------------------┐     |
+                               ├----- |                      |-----┘
+    ┌{border}┐     |      └----------------------┘     
+    |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┘
+    └{border}┘ 
+    ");
+    }
+
+
+    public static void Final(List<Personaje> ListaDeCaballeros)
+    {
+    int fixedWidth = 20; 
+    string border = new string('-', fixedWidth);
+
+
+    Console.WriteLine($@"
+    ┌{border}┐
+    |{AjustarNombre(ListaDeCaballeros[0].NombreCompleto)}|-----┐
+    └{border}┘     |      ┌{border}┐ 
+                               ├----- |{AjustarNombre(ListaDeCaballeros[1].NombreCompleto)}|-----┐
+    ┌{border}┐     |      └{border}┘     |
+    |{AjustarNombre(ListaDeCaballeros[2].NombreCompleto)}|-----┘                                 |
+    └{border}┘                                       |      ┌{border}┐
+                                                                 ├----- |                    |
+    ┌{border}┐                                       |      └{border}┘
+    |{AjustarNombre(ListaDeCaballeros[4].NombreCompleto)}|-----┐                                 |
+    └{border}┘     |      ┌{border}┐     |
+                               ├----- |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘
+    ┌{border}┐     |      └{border}┘
+    |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┘
+    └{border}┘ 
+    ");
+    }
+    public static void TablaCompleta(List<Personaje> ListaDeCaballeros)
+    {
+    int fixedWidth = 24; 
+    string border = new string('-', fixedWidth);
+
+    string AjustarNombre(string nombre)
+    {
+        if (nombre.Length > fixedWidth - 2)
+        {
+            return nombre.Substring(0, fixedWidth - 5) + "...";
+        }
+        return nombre.PadRight(fixedWidth);
+    }
+
+    Console.WriteLine($@"
+    ┌{border}┐
+    |{AjustarNombre(ListaDeCaballeros[0].NombreCompleto)}|-----┐
+    └{border}┘     |      ┌{border}┐ 
+                                   ├----- |{AjustarNombre(ListaDeCaballeros[1].NombreCompleto)}|-----┐
+    ┌{border}┐     |      └{border}┘     |
+    |{AjustarNombre(ListaDeCaballeros[2].NombreCompleto)}|-----┘                                     |
+    └{border}┘                                           |      ┌{border}┐
+                                                                         ├----- |{AjustarNombre(ListaDeCaballeros[3].NombreCompleto)}|
+    ┌{border}┐                                           |      └{border}┘
+    |{AjustarNombre(ListaDeCaballeros[4].NombreCompleto)}|-----┐                                     |
+    └{border}┘     |      ┌{border}┐     |
+                                   ├----- |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘
+    ┌{border}┐     |      └{border}┘
+    |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┘
+    └{border}┘ 
+    ");
     }
 }
