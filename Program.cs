@@ -37,7 +37,7 @@ class Program
                     Console.ReadKey();
                     break;
                 case 2:
-                    int monto, participante;
+                    int participante;
                     char confirmacion;
 
                     Personaje caballero1, caballero2;
@@ -68,19 +68,19 @@ class Program
                         Console.Write("\nIngrese numero del participante: ");
                         participante=Interfaz.IngresarEntero();
                       } while (participante == -999 || (participante != caballero1.ID && participante != caballero2.ID)); 
-                      do
-                      {
-                        do{
-                          Console.Write("\nIngrese monto entero que desea apostar: ");
-                          monto=Interfaz.IngresarEntero();
-                        } while (monto==-999);  
-                        Console.WriteLine("El monto que desea apostar es: "+monto);
-                        Console.Write("Es correcto? Si (s) / No (cualquier tecla): ");
-                        confirmacion = Console.ReadKey().KeyChar; 
-                        Console.WriteLine();
-                      } while (confirmacion != 'S' && confirmacion != 's');
-                      Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
-                      Console.Write("\nCOMIENZA LA JUSTA!");
+                      // do
+                      // {
+                      //   do{
+                      //     Console.Write("\nIngrese monto entero que desea apostar: ");
+                      //     monto=Interfaz.IngresarEntero();
+                      //   } while (monto==-999);  
+                      //   Console.WriteLine("El monto que desea apostar es: "+monto);
+                      //   Console.Write("Es correcto? Si (s) / No (cualquier tecla): ");
+                      //   confirmacion = Console.ReadKey().KeyChar; 
+                      //   Console.WriteLine();
+                      // } while (confirmacion != 'S' && confirmacion != 's');
+                      // Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
+                      Console.Write("\nCOMIENZA LA JUSTA!\n");
                       Enfrentamiento.RealizarEnfrentamiento(caballero1, caballero2);
                     } else{
                       Console.WriteLine("\nNo se realizaron apuestas...");
@@ -92,28 +92,26 @@ class Program
                 case 3:
                     Console.WriteLine("\nOpcion 3");
                     break;
-//                 case 4:
-//                     //Funcion que elimina archivo JSON y crea uno nuevo
+                case 4:
+                    //Funcion que elimina archivo JSON y crea uno nuevo
 
-//                     Console.WriteLine("Nuevos Personajes creados.");
-//                     Console.WriteLine("Presione enter para continuar");
-//                     Console.ReadKey();
-//                     Console.Clear();
-//                     break;
-//                 default:
-//                     Console.Clear();
-//                     Console.WriteLine("Muchas gracias por elegirnos.");
+                    Console.WriteLine("Nuevos Personajes creados.");
+                    Console.WriteLine("Presione enter para continuar");
+                    TablaDePosiciones.Semifinal(personajes);
+                    Console.WriteLine("*************************");
+                    TablaDePosiciones.Final(personajes);
+                    Console.WriteLine("*************************");
+                    TablaDePosiciones.TablaCompleta(personajes);
 
-//                     break;
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                case 5:
+                    Console.Clear();
+                    Console.WriteLine("Muchas gracias por elegirnos.");
+                    break;
             }
 
-        } while (menu != 4);
-
-        
-        
+        } while (menu != 5);
     }
-
-
-
-
 }
