@@ -37,37 +37,50 @@ class Program
                     Console.ReadKey();
                     break;
                 case 2:
-                    int participante;
-                    char confirmacion;
 
-                    Personaje caballero1, caballero2;
-                    caballero1=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
-                    do
+                    List<Personaje> participantes;
+
+                    participantes = ObtenerPersonajesAleatorios(personajes, 8);
+                    Console.WriteLine("Los caballeros que participaran en el torneo seran:");
+                    foreach (Personaje caballero in participantes)
                     {
-                      caballero2=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
-                    } while (caballero1==caballero2);
+                      caballero.MostraPersonaje();
+                    }
 
-                    Console.WriteLine("Los caballeros que participaran en la justa son: ");
-                    Console.WriteLine("");
-                    caballero1.MostraPersonaje();
-                    Console.WriteLine("");
-                    caballero2.MostraPersonaje();
+                    TablaDePosiciones.CuartosDefinal(participantes);
+                    // int participante;
+                    // char confirmacion;
 
-                    Console.WriteLine("\nDesea apostar por un participante?");
-                    Console.Write("Si (s) / No (cualquier tecla): ");
-                    confirmacion = Console.ReadKey().KeyChar; 
-                    Console.WriteLine();
 
-                    if(confirmacion=='s' || confirmacion=='S')
-                    {
-                      Console.WriteLine("\nPor cual apostara?\n");
-                      Console.WriteLine("\t"+caballero1.NombreCompleto+" con numero: "+caballero1.ID);
-                      Console.WriteLine("\tó");
-                      Console.WriteLine("\t"+caballero2.NombreCompleto+" con numero: "+caballero2.ID);
-                      do{
-                        Console.Write("\nIngrese numero del participante: ");
-                        participante=Interfaz.IngresarEntero();
-                      } while (participante == -999 || (participante != caballero1.ID && participante != caballero2.ID)); 
+
+                    // Personaje caballero1, caballero2;
+                    // caballero1=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
+                    // do
+                    // {
+                    //   caballero2=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
+                    // } while (caballero1==caballero2);
+
+                    // Console.WriteLine("Los caballeros que participaran en la justa son: ");
+                    // Console.WriteLine("");
+                    // caballero1.MostraPersonaje();
+                    // Console.WriteLine("");
+                    // caballero2.MostraPersonaje();
+
+                    // Console.WriteLine("\nDesea apostar por un participante?");
+                    // Console.Write("Si (s) / No (cualquier tecla): ");
+                    // confirmacion = Console.ReadKey().KeyChar; 
+                    // Console.WriteLine();
+
+                    // if(confirmacion=='s' || confirmacion=='S')
+                    // {
+                    //   Console.WriteLine("\nPor cual apostara?\n");
+                    //   Console.WriteLine("\t"+caballero1.NombreCompleto+" con numero: "+caballero1.ID);
+                    //   Console.WriteLine("\tó");
+                    //   Console.WriteLine("\t"+caballero2.NombreCompleto+" con numero: "+caballero2.ID);
+                    //   do{
+                    //     Console.Write("\nIngrese numero del participante: ");
+                    //     participante=Interfaz.IngresarEntero();
+                    //   } while (participante == -999 || (participante != caballero1.ID && participante != caballero2.ID)); 
                       // do
                       // {
                       //   do{
@@ -80,11 +93,11 @@ class Program
                       //   Console.WriteLine();
                       // } while (confirmacion != 'S' && confirmacion != 's');
                       // Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
-                      Console.Write("\nCOMIENZA LA JUSTA!\n");
-                      Enfrentamiento.RealizarEnfrentamiento(caballero1, caballero2);
-                    } else{
-                      Console.WriteLine("\nNo se realizaron apuestas...");
-                    }
+                    //   Console.Write("\nCOMIENZA LA JUSTA!\n");
+                    //   Enfrentamiento.RealizarEnfrentamiento(caballero1, caballero2);
+                    // } else{
+                    //   Console.WriteLine("\nNo se realizaron apuestas...");
+                    // }
 
                     Console.Write("\nPresione una tecla para volver al menu... ");
                     Console.ReadKey();                    
@@ -113,5 +126,23 @@ class Program
             }
 
         } while (menu != 5);
+    }
+
+    public static List<Personaje> ObtenerPersonajesAleatorios(List<Personaje> listaPersonajes, int cantidad)
+    {
+        List<Personaje> participantes = new List<Personaje>();
+
+        while (participantes.Count < cantidad)
+        {
+            Personaje personaje;
+            do
+            {
+                personaje = listaPersonajes[Utilidades.ObtenerIntRandom(0, listaPersonajes.Count)];
+            } while (participantes.Contains(personaje));
+            
+            participantes.Add(personaje);
+        }
+
+        return participantes;
     }
 }
