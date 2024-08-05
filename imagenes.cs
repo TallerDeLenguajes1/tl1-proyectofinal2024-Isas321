@@ -174,7 +174,7 @@ public class TablaDePosiciones{
     ┌{border}┐     |      └----------------------┘     |                                 |
     |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘                                   |                                 |
     └{border}┘                                         |      ┌{border}┐     |            
-                                                                   ├----- |{AjustarNombre(finalistas[0].NombreCompleto)}|-----┘
+                                                                   ├----- |{AjustarNombre(finalistas[1].NombreCompleto)}|-----┘
     ┌{border}┐                                         |      └{border}┘
     |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┐                                   |
     └{border}┘     |      ┌----------------------┐     |
@@ -213,7 +213,7 @@ public class TablaDePosiciones{
     ┌{border}┐     |      └----------------------┘     |                                 |
     |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘                                   |                                 |
     └{border}┘                                         |      ┌{border}┐     |            
-                                                                   ├----- |{AjustarNombre(finalistas[0].NombreCompleto)}|-----┘
+                                                                   ├----- |{AjustarNombre(finalistas[1].NombreCompleto)}|-----┘
     ┌{border}┐                                         |      └{border}┘
     |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┐                                   |
     └{border}┘     |      ┌----------------------┐     |
