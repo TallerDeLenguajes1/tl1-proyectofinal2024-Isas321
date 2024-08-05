@@ -47,7 +47,7 @@ class Program
                       caballero.MostraPersonaje();
                     }
 
-                    TablaDePosiciones.CuartosDefinal(participantes);
+                    TablaDePosiciones.Final1(participantes);
                     // int participante;
                     // char confirmacion;
 
