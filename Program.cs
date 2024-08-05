@@ -38,7 +38,9 @@ class Program
                     break;
                 case 2:
 
-                    List<Personaje> participantes;
+                    List<Personaje> participantes, semifinalistas, finalistas;
+                    Personaje semifinalista1, semifinalista2, semifinalista3, semifinalista4;
+                    Personaje finalista1, finalista2, ganador;
 
                     participantes = ObtenerPersonajesAleatorios(personajes, 8);
                     Console.WriteLine("Los caballeros que participaran en el torneo seran:");
@@ -47,7 +49,50 @@ class Program
                       caballero.MostraPersonaje();
                     }
 
-                    TablaDePosiciones.Final1(participantes);
+                    Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS ***\n");
+                    TablaDePosiciones.CuartosDefinal(participantes);
+
+                    Console.WriteLine("\n\n\n**** Compiten por el lugar para el primer semifinalista ***\n");
+                    semifinalista1 = Enfrentamiento.RealizarEnfrentamiento(participantes[0], participantes[1]);
+                    Console.WriteLine("\n\n\n**** Compiten por el lugar para el segundo semifinalista ***\n");
+                    semifinalista2 = Enfrentamiento.RealizarEnfrentamiento(participantes[2], participantes[3]);
+                    Console.WriteLine("\n\n\n**** Compiten por el lugar para el tercer semifinalista ***\n");
+                    semifinalista3 = Enfrentamiento.RealizarEnfrentamiento(participantes[4], participantes[5]);
+                    Console.WriteLine("\n\n\n**** Compiten por el lugar para el cuarto semifinalista ***\n");
+                    semifinalista4 = Enfrentamiento.RealizarEnfrentamiento(participantes[6], participantes[7]);
+                    
+                    semifinalistas = new List<Personaje>();
+
+                    semifinalistas.Add(semifinalista1);
+                    semifinalistas.Add(semifinalista2);
+                    semifinalistas.Add(semifinalista3);
+                    semifinalistas.Add(semifinalista4);
+
+                    Console.WriteLine("\n\n\n**** RESULTADOS DE LOS CUARTOS DE FINAL ***\n");
+                    TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
+
+                    Console.WriteLine("\n\n\n**** Compiten por el lugar para el primer finalista ***\n");
+                    finalista1 = Enfrentamiento.RealizarEnfrentamiento(semifinalista1, semifinalista2);
+                    Console.WriteLine("\n\n\n**** Compiten por el lugar para el segundo finalista ***\n");
+                    finalista2 = Enfrentamiento.RealizarEnfrentamiento(semifinalista3, semifinalista4);
+
+                    finalistas = new List<Personaje>();
+
+                    finalistas.Add(finalista1);
+                    finalistas.Add(finalista2);
+
+                    Console.WriteLine("\n\n\n**** RESULTADOS DE LAS SEMIFINALES ***\n");
+                    TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
+
+                    Console.WriteLine("\n\n\n**** Enfrentamiento Final ***");
+                    ganador = Enfrentamiento.RealizarEnfrentamiento(finalista1, finalista2);
+
+                    Console.WriteLine("\n\n\n**** RESULTADOS DE LA SEMIFINALES ***\n");
+                    TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
+
+                    Console.WriteLine("\n\n\n**** TABLA COMPLETA ***\n");
+                    TablaDePosiciones.TablaCompleta1(participantes, semifinalistas, finalistas, ganador);
+
                     // int participante;
                     // char confirmacion;
 
