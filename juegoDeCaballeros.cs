@@ -4,6 +4,7 @@ namespace EspacioJuegoDeCaballeros;
     {
         public static Personaje RealizarEnfrentamiento(Personaje caballero1, Personaje caballero2)
         {
+            Personaje ganador;
             int carrera = 1;
             do
             {
@@ -19,8 +20,9 @@ namespace EspacioJuegoDeCaballeros;
                     return caballero2;
                 }
             } while (carrera <=3 && caballero1.Salud>0 && caballero2.Salud>0);
-
-            return DeterminarGanador(caballero1, caballero2);
+            ganador = DeterminarGanador(caballero1, caballero2);
+            
+            return ganador;
         }
 
         private static bool RealizarAtaque(Personaje atacante, Personaje defensor)
