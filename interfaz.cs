@@ -39,6 +39,12 @@ public class Interfaz{
         //  (tareaPresionDeTecla o tareaDeEspera) se haya completado.
     }
 
+        public static async Task EsperarPorTecla()
+    {
+        Task tareaDePresiónDeTecla = Task.Run(() => Console.ReadKey(true));
+        Task tareaCompletada = await Task.WhenAny(tareaDePresiónDeTecla);
+    }
+
     public static void Presentacion(){
       Console.WriteLine("\n\n");
         Console.WriteLine("¡Bienvenido a 'Apuestas de Juego de Tronos'!");
