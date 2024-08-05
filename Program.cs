@@ -11,6 +11,8 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        int menu;
+        char confirmacion;
         List<Personaje> personajes = new List<Personaje>();
         Imagenes.caballero();
         Console.WriteLine("\n\t\t\t\t\t\t\tPRESIONE UNA TECLA PARA JUGAR");
@@ -18,7 +20,7 @@ class Program
         Console.Clear();
         Interfaz.Presentacion();
         personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
-        int menu;
+
         do
         {   
             Console.Clear();
@@ -43,14 +45,26 @@ class Program
                     Personaje finalista1, finalista2, ganador;
 
                     participantes = ObtenerPersonajesAleatorios(personajes, 8);
-                    Console.WriteLine("Los caballeros que participaran en el torneo seran:");
-                    foreach (Personaje caballero in participantes)
-                    {
-                      caballero.MostraPersonaje();
-                    }
 
-                    Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS ***\n");
+                    Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS CUARTOS DE FINAL ***\n");
                     TablaDePosiciones.CuartosDefinal(participantes);
+
+                    Console.WriteLine("\nDesea saber mas sobre los participantes?");
+                    Console.Write("Si (s) / No (cualquier tecla): ");
+                    confirmacion = Console.ReadKey().KeyChar; 
+                    Console.WriteLine();
+
+                    if(confirmacion=='s' || confirmacion=='S')
+                    {
+                        Console.WriteLine("Los caballeros que participaran en el torneo seran:");
+                        foreach (Personaje caballero in participantes)
+                        {
+                        caballero.MostraPersonaje();
+                        }
+                    }
+                    Console.Write("\nPresione una tecla para comenzar el torneo...");
+                    await Interfaz.EsperarPorTecla();
+                    Console.Write("\n\n\n\nQUE COMIENCEN LAs JUSTAs!\n\n");
 
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el primer semifinalista ***\n");
                     semifinalista1 = Enfrentamiento.RealizarEnfrentamiento(participantes[0], participantes[1]);
@@ -68,7 +82,7 @@ class Program
                     semifinalistas.Add(semifinalista3);
                     semifinalistas.Add(semifinalista4);
 
-                    Console.WriteLine("\n\n\n**** RESULTADOS DE LOS CUARTOS DE FINAL ***\n");
+                    Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS SEMIFINAL ***\n");
                     TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
 
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el primer finalista ***\n");
@@ -81,16 +95,13 @@ class Program
                     finalistas.Add(finalista1);
                     finalistas.Add(finalista2);
 
-                    Console.WriteLine("\n\n\n**** RESULTADOS DE LAS SEMIFINALES ***\n");
-                    TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
+                    Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS FINAL ***\n");
+                    TablaDePosiciones.Final1(participantes, semifinalistas, finalistas);
 
                     Console.WriteLine("\n\n\n**** Enfrentamiento Final ***");
                     ganador = Enfrentamiento.RealizarEnfrentamiento(finalista1, finalista2);
 
-                    Console.WriteLine("\n\n\n**** RESULTADOS DE LA SEMIFINALES ***\n");
-                    TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
-
-                    Console.WriteLine("\n\n\n**** TABLA COMPLETA ***\n");
+                    Console.WriteLine("\n\n\n**** TABLA COMPLETA DEL TORNEO ***\n");
                     TablaDePosiciones.TablaCompleta1(participantes, semifinalistas, finalistas, ganador);
 
                     // int participante;
