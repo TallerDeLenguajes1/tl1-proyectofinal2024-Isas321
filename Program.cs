@@ -6,13 +6,13 @@ using EspacioImagenes;
 using EspacioPersonaje;
 using EspacioInterfaz;
 using EspacioJuegoDeCaballeros;
+using EspacioManejoJson;
 using System.Text.RegularExpressions;
 //Task es una tarea, una operacion asincronicas
 class Program
 {
     static async Task Main(string[] args)
     {
-        char confirmacion='n';
         int menu;
         List<Personaje> personajes = new List<Personaje>();
         Imagenes.caballero();
@@ -41,16 +41,12 @@ class Program
                     Console.ReadKey();
                     break;
                 case 2:
-
-                    List<Personaje> semifinalistas, finalistas;
+                    char confirmacion='n';
+                    List<Personaje> participantes, semifinalistas, finalistas;
                     Personaje semifinalista1, semifinalista2, semifinalista3, semifinalista4;
                     Personaje finalista1, finalista2, ganador, jugador=null;
                     int seEncuentra=0;
-
-                    
-                    List<Personaje> participantes = new List<Personaje>();
-                    participantes=null;
-                    
+                                      
                     participantes = ObtenerPersonajesAleatorios(personajes, 7);
 
                     Console.WriteLine("Los caballeros que participan en este torneo son:");
@@ -109,6 +105,7 @@ class Program
                     } while (string.IsNullOrEmpty(nombreDeCasa));
 
                     jugador = FabricaDePersonajes.CrearPersonaje(13, nombreDeCasa, nombreJugador);
+                    jugador.Salud+=20;
 
                     Console.WriteLine($"\n\nTus datos y caracteristicas: \n");
                     jugador.MostraPersonaje();
@@ -134,7 +131,6 @@ class Program
                     await Interfaz.EsperarPorTecla();
                     Console.WriteLine("\n\n\n\n**** Compiten por el lugar para el cuarto semifinalista ***\n");
                     semifinalista4 = Enfrentamiento.RealizarEnfrentamiento(participantes[6], jugador);
-                    await Interfaz.EsperarPorTecla();
 
                     if(semifinalista4!=jugador){
                         Console.WriteLine("\n\nPerdiste, pero puede que en la proxima vez tengas mas suerte!\n");
@@ -214,17 +210,22 @@ class Program
                         
                         }
                     }
-                    // if(confirmacion != 'S' && confirmacion != 's'){
-                    //     await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(8));
-                    // }
+                    if(confirmacion != 'S' && confirmacion != 's'){
+                        await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(8));
+                    }
 
                     Console.WriteLine("\n\n\n**** TABLA COMPLETA DEL TORNEO ***\n");
                     TablaDePosiciones.TablaCompleta1(jugador, participantes, semifinalistas, finalistas, ganador);
 
+                     if(ganador==jugador){                    
+                        Console.Write("\nGanaste el torneo! \n");
+                        ganador.MostraPersonaje();
+                    }
+                    
+                    personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
                     Console.Write("\nPresione una tecla para volver al menu... ");
                     Console.ReadKey();
-                    Console.Write("\nPresione una tecla para volver al menu... ");
-                    Console.ReadKey();                    
+                  
                     break;
                 case 3:
                     Console.WriteLine("\nOpcion 3");
