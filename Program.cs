@@ -6,13 +6,13 @@ using EspacioImagenes;
 using EspacioPersonaje;
 using EspacioInterfaz;
 using EspacioJuegoDeCaballeros;
+using System.Text.RegularExpressions;
 //Task es una tarea, una operacion asincronicas
 class Program
 {
     static async Task Main(string[] args)
     {
         int menu;
-        char confirmacion;
         List<Personaje> personajes = new List<Personaje>();
         Imagenes.caballero();
         Console.WriteLine("\n\t\t\t\t\t\t\tPRESIONE UNA TECLA PARA JUGAR");
@@ -20,6 +20,7 @@ class Program
         Console.Clear();
         Interfaz.Presentacion();
         personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
+
 
         do
         {   
@@ -42,38 +43,83 @@ class Program
 
                     List<Personaje> participantes, semifinalistas, finalistas;
                     Personaje semifinalista1, semifinalista2, semifinalista3, semifinalista4;
-                    Personaje finalista1, finalista2, ganador;
+                    Personaje finalista1, finalista2, ganador, jugador=null;
+                    int seEncuentra=0;
 
-                    participantes = ObtenerPersonajesAleatorios(personajes, 8);
+                    participantes = ObtenerPersonajesAleatorios(personajes, 7);
+
+                    Console.WriteLine("Los caballeros que participan en este torneo son:");
+                    foreach (Personaje caballero in participantes)
+                    {   
+                        Console.WriteLine();
+                        caballero.MostraPersonaje();
+                    }
+
+                    string nombreJugador = "", nombreDeCasa="";
+                    do
+                    {
+                        Console.Write("\nIngrese su nombre: ");
+                        nombreJugador = Console.ReadLine();
+
+                        if (!EsNombreValido(nombreJugador))
+                        {
+                            Console.WriteLine("Nombre inválido. Por favor, ingrese solo letras.");
+                            nombreJugador = "";
+                        }
+                        
+                        seEncuentra = 0;
+
+                        foreach (var caballero in personajes)
+                        {
+                            if(caballero.NombreCompleto==nombreJugador){
+                                Console.WriteLine("El Nombre que deseas ya lo tiene otro caballero");
+                                seEncuentra=1;
+                                break;
+                            } 
+                        }
+
+                    } while (string.IsNullOrEmpty(nombreJugador) || seEncuentra==1);
+
+                    do
+                    {
+                        Console.Write("\nIngrese el nombre de su casa: ");
+                        nombreDeCasa = Console.ReadLine();
+
+                        if (!EsNombreValido(nombreJugador))
+                        {
+                            Console.WriteLine("Nombre inválido. Por favor, ingrese solo letras.");
+                            nombreDeCasa = "";
+                        }
+                    } while (string.IsNullOrEmpty(nombreDeCasa));
+
+                    jugador = FabricaDePersonajes.CrearPersonaje(13, nombreDeCasa, nombreJugador);
+
+                    Console.WriteLine($"\n\nTus datos y caracteristicas: \n");
+                    jugador.MostraPersonaje();
+                    Console.Write("\nPresione una tecla para ver la tabla de enfrentamientos");
+                    await Interfaz.EsperarPorTecla();
 
                     Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS CUARTOS DE FINAL ***\n");
-                    TablaDePosiciones.CuartosDefinal(participantes);
+                    TablaDePosiciones.CuartosDefinal(jugador, participantes);
 
-                    Console.WriteLine("\nDesea saber mas sobre los participantes?");
-                    Console.Write("Si (s) / No (cualquier tecla): ");
-                    confirmacion = Console.ReadKey().KeyChar; 
-                    Console.WriteLine();
-
-                    if(confirmacion=='s' || confirmacion=='S')
-                    {
-                        Console.WriteLine("Los caballeros que participaran en el torneo seran:");
-                        foreach (Personaje caballero in participantes)
-                        {
-                        caballero.MostraPersonaje();
-                        }
-                    }
                     Console.Write("\nPresione una tecla para comenzar el torneo...");
                     await Interfaz.EsperarPorTecla();
-                    Console.Write("\n\n\n\nQUE COMIENCEN LAs JUSTAs!\n\n");
+
+                    Console.Write("\n\n\n\nQUE COMIENCEN LAs JUSTAS!\n\n");
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(2));
 
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el primer semifinalista ***\n");
                     semifinalista1 = Enfrentamiento.RealizarEnfrentamiento(participantes[0], participantes[1]);
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(8));
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el segundo semifinalista ***\n");
                     semifinalista2 = Enfrentamiento.RealizarEnfrentamiento(participantes[2], participantes[3]);
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(8));
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el tercer semifinalista ***\n");
                     semifinalista3 = Enfrentamiento.RealizarEnfrentamiento(participantes[4], participantes[5]);
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(8));
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el cuarto semifinalista ***\n");
-                    semifinalista4 = Enfrentamiento.RealizarEnfrentamiento(participantes[6], participantes[7]);
+                    semifinalista4 = Enfrentamiento.RealizarEnfrentamiento(participantes[6], jugador);
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(8));
                     
                     semifinalistas = new List<Personaje>();
 
@@ -81,14 +127,19 @@ class Program
                     semifinalistas.Add(semifinalista2);
                     semifinalistas.Add(semifinalista3);
                     semifinalistas.Add(semifinalista4);
+                    
+                    Console.Write("\n\nPresione una tecla para seguir a la semifinal\n");
+                    await Interfaz.EsperarPorTecla();
 
                     Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS SEMIFINAL ***\n");
-                    TablaDePosiciones.SemiFinal1(participantes, semifinalistas);
+                    TablaDePosiciones.SemiFinal1(jugador, participantes, semifinalistas);
 
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el primer finalista ***\n");
                     finalista1 = Enfrentamiento.RealizarEnfrentamiento(semifinalista1, semifinalista2);
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(4));
                     Console.WriteLine("\n\n\n**** Compiten por el lugar para el segundo finalista ***\n");
                     finalista2 = Enfrentamiento.RealizarEnfrentamiento(semifinalista3, semifinalista4);
+                    await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(4));
 
                     finalistas = new List<Personaje>();
 
@@ -96,64 +147,13 @@ class Program
                     finalistas.Add(finalista2);
 
                     Console.WriteLine("\n\n\n**** TABLA DE ENFRENTAMIENTOS FINAL ***\n");
-                    TablaDePosiciones.Final1(participantes, semifinalistas, finalistas);
+                    TablaDePosiciones.Final1(jugador, participantes, semifinalistas, finalistas);
 
                     Console.WriteLine("\n\n\n**** Enfrentamiento Final ***");
                     ganador = Enfrentamiento.RealizarEnfrentamiento(finalista1, finalista2);
 
                     Console.WriteLine("\n\n\n**** TABLA COMPLETA DEL TORNEO ***\n");
-                    TablaDePosiciones.TablaCompleta1(participantes, semifinalistas, finalistas, ganador);
-
-                    // int participante;
-                    // char confirmacion;
-
-
-
-                    // Personaje caballero1, caballero2;
-                    // caballero1=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
-                    // do
-                    // {
-                    //   caballero2=personajes[Utilidades.ObtenerIntRandom(0,personajes.Count)];
-                    // } while (caballero1==caballero2);
-
-                    // Console.WriteLine("Los caballeros que participaran en la justa son: ");
-                    // Console.WriteLine("");
-                    // caballero1.MostraPersonaje();
-                    // Console.WriteLine("");
-                    // caballero2.MostraPersonaje();
-
-                    // Console.WriteLine("\nDesea apostar por un participante?");
-                    // Console.Write("Si (s) / No (cualquier tecla): ");
-                    // confirmacion = Console.ReadKey().KeyChar; 
-                    // Console.WriteLine();
-
-                    // if(confirmacion=='s' || confirmacion=='S')
-                    // {
-                    //   Console.WriteLine("\nPor cual apostara?\n");
-                    //   Console.WriteLine("\t"+caballero1.NombreCompleto+" con numero: "+caballero1.ID);
-                    //   Console.WriteLine("\tó");
-                    //   Console.WriteLine("\t"+caballero2.NombreCompleto+" con numero: "+caballero2.ID);
-                    //   do{
-                    //     Console.Write("\nIngrese numero del participante: ");
-                    //     participante=Interfaz.IngresarEntero();
-                    //   } while (participante == -999 || (participante != caballero1.ID && participante != caballero2.ID)); 
-                      // do
-                      // {
-                      //   do{
-                      //     Console.Write("\nIngrese monto entero que desea apostar: ");
-                      //     monto=Interfaz.IngresarEntero();
-                      //   } while (monto==-999);  
-                      //   Console.WriteLine("El monto que desea apostar es: "+monto);
-                      //   Console.Write("Es correcto? Si (s) / No (cualquier tecla): ");
-                      //   confirmacion = Console.ReadKey().KeyChar; 
-                      //   Console.WriteLine();
-                      // } while (confirmacion != 'S' && confirmacion != 's');
-                      // Console.WriteLine("\nApuesta: " + monto + " a " + (participante == caballero1.ID ? caballero1.NombreCompleto : caballero2.NombreCompleto));
-                    //   Console.Write("\nCOMIENZA LA JUSTA!\n");
-                    //   Enfrentamiento.RealizarEnfrentamiento(caballero1, caballero2);
-                    // } else{
-                    //   Console.WriteLine("\nNo se realizaron apuestas...");
-                    // }
+                    TablaDePosiciones.TablaCompleta1(jugador, participantes, semifinalistas, finalistas, ganador);
 
                     Console.Write("\nPresione una tecla para volver al menu... ");
                     Console.ReadKey();                    
@@ -201,4 +201,11 @@ class Program
 
         return participantes;
     }
+
+    static bool EsNombreValido(string nombre)
+    {
+        return Regex.IsMatch(nombre, @"^[a-zA-Z\s]+$");
+    }
+
+
 }
