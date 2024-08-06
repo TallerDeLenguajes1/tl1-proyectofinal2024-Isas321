@@ -48,6 +48,10 @@ public class Personaje{
     public int Salud { get => salud; set => salud = value; }
 
     public void MostraPersonaje(){
+        if (this == null) {
+            Console.WriteLine("No hay caballero");
+        return;
+    }
         Console.WriteLine("\t\tCaballero numero["+ID+"]");
         Console.WriteLine("\t\tNombre: "+ NombreCompleto);
         Console.WriteLine("\t\tCasa: "+ Casa);
