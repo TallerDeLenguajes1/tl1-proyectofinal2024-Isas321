@@ -21,16 +21,18 @@ namespace EspacioJuegoDeCaballeros;
                 {
                     Console.WriteLine($"\nEnfrentamiento [{carrera++}]");
                     Console.WriteLine($"\n* Turno de {caballero1.NombreCompleto}");
-                    if (RealizarAtaque(caballero1, caballero2))
+                    if (RealizarAtaque(caballero1, caballero2))//caballero 1 ataca
                     {
-                        return caballero1;
+                        return caballero1; //devuelve al ganador
                     }
+
+                    Console.WriteLine($"\nEnfrentamiento [{carrera++}]");
                     Console.WriteLine($"\n* Turno de {caballero2.NombreCompleto}");
                     if (RealizarAtaque(caballero2, caballero1))
                     {
                         return caballero2;
                     }
-                } while (carrera <=2 && caballero1.Salud>0 && caballero2.Salud>0);
+                } while (carrera <=4 && caballero1.Salud>0 && caballero2.Salud>0);
                 ganador = DeterminarGanador(caballero1, caballero2);
                 
                 return ganador;
@@ -41,7 +43,7 @@ namespace EspacioJuegoDeCaballeros;
 
         private static bool RealizarAtaque(Personaje atacante, Personaje defensor)
         {
-            int danio = CalcularDanio(atacante, defensor);
+            float danio = CalcularDanio(atacante, defensor);
             defensor.Salud -= danio;
             if (defensor.Salud < 0)
             {
@@ -49,7 +51,7 @@ namespace EspacioJuegoDeCaballeros;
             }
 
             Console.WriteLine($"{atacante.NombreCompleto} ataca a {defensor.NombreCompleto} y provoca {danio} puntos de daño.");
-            Console.WriteLine($"{defensor.NombreCompleto} tiene {defensor.Salud} puntos de salud restantes.");
+            Console.WriteLine($"{defensor.NombreCompleto} tiene {defensor.Salud:F2} puntos de salud restantes.");
 
             if (defensor.Salud <= 0)
             {
@@ -77,14 +79,14 @@ namespace EspacioJuegoDeCaballeros;
             return null;
         }
 
-  public static int CalcularDanio(Personaje atacante, Personaje defensor)
+  public static float CalcularDanio(Personaje atacante, Personaje defensor)
   {
       
       int ataque = atacante.Destreza * atacante.Fuerza * atacante.Nivel;
       int efectividad = Utilidades.ObtenerIntRandom(1, 101);
       int defensa = defensor.Armadura * defensor.Velocidad;
       const int constanteDeAjuste = 50;
-      int danioProvocado = ((ataque * efectividad) - defensa) / constanteDeAjuste;
+      float danioProvocado = ((float)((ataque * efectividad) - defensa)) / constanteDeAjuste;
 
       if (danioProvocado < 0)
       {
