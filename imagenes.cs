@@ -66,7 +66,7 @@ public class TablaDePosiciones{
         return nombre.PadRight(fixedWidth);
     }
 
-    public static void CuartosDefinal(List<Personaje> ListaDeCaballeros)
+    public static void CuartosDefinal(Personaje jugador, List<Personaje> ListaDeCaballeros)
     {    
     int fixedWidth = 20; 
     string border = new string('-', fixedWidth);
@@ -100,21 +100,37 @@ public class TablaDePosiciones{
     └{border}┘     |      ┌----------------------┐     |
                                ├----- |                      |-----┘
     ┌{border}┐     |      └----------------------┘     
-    |{AjustarNombre(ListaDeCaballeros[7].NombreCompleto)}|-----┘
+    |{AjustarNombre(jugador.NombreCompleto)}|-----┘
     └{border}┘ 
     ");
     }
 
 
-    public static void SemiFinal1(List<Personaje> ListaDeCaballeros, List<Personaje> semifinalistas)
+    public static void SemiFinal1(Personaje jugador, List<Personaje> ListaDeCaballeros, List<Personaje> semifinalistas)
     {    
     int fixedWidth = 20; 
     string border = new string('-', fixedWidth);
+
+    string nombreSemifinalista1 = semifinalistas[0] != null 
+            ? AjustarNombre(semifinalistas[0].NombreCompleto) 
+            : " ";
+
+    string nombreSemifinalista2 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[1].NombreCompleto) 
+            : " ";
+
+    string nombreSemifinalista3 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[2].NombreCompleto) 
+            : " ";
+    string nombreSemifinalista4 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[3].NombreCompleto) 
+            : " ";
+
     Console.WriteLine($@"
     ┌{border}┐
     |{AjustarNombre(ListaDeCaballeros[0].NombreCompleto)}|-----┐
     └{border}┘     |      ┌----------------------┐ 
-                               ├----- |{AjustarNombre(semifinalistas[0].NombreCompleto)}  |-----┐
+                               ├----- |{nombreSemifinalista1}  |-----┐
     ┌{border}┐     |      └----------------------┘     |                            
     |{AjustarNombre(ListaDeCaballeros[1].NombreCompleto)}|-----┘                                   |
     └{border}┘                                         |      ┌{border}┐
@@ -122,7 +138,7 @@ public class TablaDePosiciones{
     ┌{border}┐                                         |      └{border}┘     |
     |{AjustarNombre(ListaDeCaballeros[2].NombreCompleto)}|-----┐                                   |                                 |
     └{border}┘     |      ┌----------------------┐     |                                 |
-                               ├----- |{AjustarNombre(semifinalistas[1].NombreCompleto)}  |-----┘                                 |
+                               ├----- |{nombreSemifinalista2}  |-----┘                                 |
     ┌{border}┐     |      └----------------------┘                                       |
     |{AjustarNombre(ListaDeCaballeros[3].NombreCompleto)}|-----┘                                                                     |
     └{border}┘                                                                           |     ┌----------------------┐
@@ -130,7 +146,7 @@ public class TablaDePosiciones{
     ┌{border}┐                                                                           |     └----------------------┘
     |{AjustarNombre(ListaDeCaballeros[4].NombreCompleto)}|-----┐                                                                     |
     └{border}┘     |      ┌----------------------┐                                       |
-                               ├----- |{AjustarNombre(semifinalistas[2].NombreCompleto)}  |-----┐                                 |
+                               ├----- |{nombreSemifinalista3}  |-----┐                                 |
     ┌{border}┐     |      └----------------------┘     |                                 |
     |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘                                   |                                 |
     └{border}┘                                         |      ┌{border}┐     |            
@@ -138,31 +154,55 @@ public class TablaDePosiciones{
     ┌{border}┐                                         |      └{border}┘
     |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┐                                   |
     └{border}┘     |      ┌----------------------┐     |
-                               ├----- |{AjustarNombre(semifinalistas[3].NombreCompleto)}  |-----┘
+                               ├----- |{nombreSemifinalista4}  |-----┘
     ┌{border}┐     |      └----------------------┘     
-    |{AjustarNombre(ListaDeCaballeros[7].NombreCompleto)}|-----┘
+    |{AjustarNombre(jugador.NombreCompleto)}|-----┘
     └{border}┘ 
     ");
     }
 
 
-    public static void Final1(List<Personaje> ListaDeCaballeros, List<Personaje> semifinalistas, List<Personaje> finalistas)
+    public static void Final1(Personaje jugador, List<Personaje> ListaDeCaballeros, List<Personaje> semifinalistas, List<Personaje> finalistas)
     {    
     int fixedWidth = 20; 
     string border = new string('-', fixedWidth);
+
+    string nombreSemifinalista1 = semifinalistas[0] != null 
+            ? AjustarNombre(semifinalistas[0].NombreCompleto) 
+            : " ";
+
+    string nombreSemifinalista2 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[1].NombreCompleto) 
+            : " ";
+
+    string nombreSemifinalista3 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[2].NombreCompleto) 
+            : " ";
+    string nombreSemifinalista4 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[3].NombreCompleto) 
+            : " ";
+
+    string nombrefinalista1 = finalistas[0] != null 
+            ? AjustarNombre(finalistas[0].NombreCompleto) 
+            : " ";
+
+    string nombrefinalista2 = finalistas[1] != null 
+            ? AjustarNombre(finalistas[1].NombreCompleto) 
+            : " ";
+
     Console.WriteLine($@"
     ┌{border}┐
     |{AjustarNombre(ListaDeCaballeros[0].NombreCompleto)}|-----┐
     └{border}┘     |      ┌----------------------┐ 
-                               ├----- |{AjustarNombre(semifinalistas[0].NombreCompleto)}  |-----┐
+                               ├----- |{nombreSemifinalista1}  |-----┐
     ┌{border}┐     |      └----------------------┘     |                            
     |{AjustarNombre(ListaDeCaballeros[1].NombreCompleto)}|-----┘                                   |
     └{border}┘                                         |      ┌{border}┐
-                                                                   ├----- |{AjustarNombre(finalistas[0].NombreCompleto)}|-----┐
+                                                                   ├----- |{nombrefinalista1}|-----┐
     ┌{border}┐                                         |      └{border}┘     |
     |{AjustarNombre(ListaDeCaballeros[2].NombreCompleto)}|-----┐                                   |                                 |
     └{border}┘     |      ┌----------------------┐     |                                 |
-                               ├----- |{AjustarNombre(semifinalistas[1].NombreCompleto)}  |-----┘                                 |
+                               ├----- |{nombreSemifinalista2}  |-----┘                                 |
     ┌{border}┐     |      └----------------------┘                                       |
     |{AjustarNombre(ListaDeCaballeros[3].NombreCompleto)}|-----┘                                                                     |
     └{border}┘                                                                           |     ┌----------------------┐
@@ -170,38 +210,62 @@ public class TablaDePosiciones{
     ┌{border}┐                                                                           |     └----------------------┘
     |{AjustarNombre(ListaDeCaballeros[4].NombreCompleto)}|-----┐                                                                     |
     └{border}┘     |      ┌----------------------┐                                       |
-                               ├----- |{AjustarNombre(semifinalistas[2].NombreCompleto)}  |-----┐                                 |
+                               ├----- |{nombreSemifinalista3}  |-----┐                                 |
     ┌{border}┐     |      └----------------------┘     |                                 |
     |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘                                   |                                 |
     └{border}┘                                         |      ┌{border}┐     |            
-                                                                   ├----- |{AjustarNombre(finalistas[1].NombreCompleto)}|-----┘
+                                                                   ├----- |{nombrefinalista2}|-----┘
     ┌{border}┐                                         |      └{border}┘
     |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┐                                   |
     └{border}┘     |      ┌----------------------┐     |
-                               ├----- |{AjustarNombre(semifinalistas[3].NombreCompleto)}  |-----┘
+                               ├----- |{nombreSemifinalista4}  |-----┘
     ┌{border}┐     |      └----------------------┘     
-    |{AjustarNombre(ListaDeCaballeros[7].NombreCompleto)}|-----┘
+    |{AjustarNombre(jugador.NombreCompleto)}|-----┘
     └{border}┘ 
     ");
     }
 
-    public static void TablaCompleta1(List<Personaje> ListaDeCaballeros, List<Personaje> semifinalistas, List<Personaje> finalistas, Personaje ganador)
+    public static void TablaCompleta1(Personaje jugador, List<Personaje> ListaDeCaballeros, List<Personaje> semifinalistas, List<Personaje> finalistas, Personaje ganador)
     {    
     int fixedWidth = 20; 
     string border = new string('-', fixedWidth);
+
+    string nombreSemifinalista1 = semifinalistas[0] != null 
+            ? AjustarNombre(semifinalistas[0].NombreCompleto) 
+            : " ";
+
+    string nombreSemifinalista2 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[1].NombreCompleto) 
+            : " ";
+
+    string nombreSemifinalista3 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[2].NombreCompleto) 
+            : " ";
+    string nombreSemifinalista4 = semifinalistas[1] != null 
+            ? AjustarNombre(semifinalistas[3].NombreCompleto) 
+            : " ";
+
+    string nombrefinalista1 = finalistas[0] != null 
+            ? AjustarNombre(finalistas[0].NombreCompleto) 
+            : " ";
+
+    string nombrefinalista2 = finalistas[1] != null 
+            ? AjustarNombre(finalistas[1].NombreCompleto) 
+            : " ";
+
     Console.WriteLine($@"
     ┌{border}┐
     |{AjustarNombre(ListaDeCaballeros[0].NombreCompleto)}|-----┐
     └{border}┘     |      ┌----------------------┐ 
-                               ├----- |{AjustarNombre(semifinalistas[0].NombreCompleto)}  |-----┐
+                               ├----- |{nombreSemifinalista1}  |-----┐
     ┌{border}┐     |      └----------------------┘     |                            
     |{AjustarNombre(ListaDeCaballeros[1].NombreCompleto)}|-----┘                                   |
     └{border}┘                                         |      ┌{border}┐
-                                                                   ├----- |{AjustarNombre(finalistas[0].NombreCompleto)}|-----┐
+                                                                   ├----- |{nombrefinalista1}|-----┐
     ┌{border}┐                                         |      └{border}┘     |
     |{AjustarNombre(ListaDeCaballeros[2].NombreCompleto)}|-----┐                                   |                                 |
     └{border}┘     |      ┌----------------------┐     |                                 |
-                               ├----- |{AjustarNombre(semifinalistas[1].NombreCompleto)}  |-----┘                                 |
+                               ├----- |{nombreSemifinalista2}  |-----┘                                 |
     ┌{border}┐     |      └----------------------┘                                       |
     |{AjustarNombre(ListaDeCaballeros[3].NombreCompleto)}|-----┘                                                                     |
     └{border}┘                                                                           |     ┌----------------------┐
@@ -209,17 +273,17 @@ public class TablaDePosiciones{
     ┌{border}┐                                                                           |     └----------------------┘
     |{AjustarNombre(ListaDeCaballeros[4].NombreCompleto)}|-----┐                                                                     |
     └{border}┘     |      ┌----------------------┐                                       |
-                               ├----- |{AjustarNombre(semifinalistas[2].NombreCompleto)}  |-----┐                                 |
+                               ├----- |{nombreSemifinalista3}  |-----┐                                 |
     ┌{border}┐     |      └----------------------┘     |                                 |
     |{AjustarNombre(ListaDeCaballeros[5].NombreCompleto)}|-----┘                                   |                                 |
     └{border}┘                                         |      ┌{border}┐     |            
-                                                                   ├----- |{AjustarNombre(finalistas[1].NombreCompleto)}|-----┘
+                                                                   ├----- |{nombrefinalista2}|-----┘
     ┌{border}┐                                         |      └{border}┘
     |{AjustarNombre(ListaDeCaballeros[6].NombreCompleto)}|-----┐                                   |
     └{border}┘     |      ┌----------------------┐     |
-                               ├----- |{AjustarNombre(semifinalistas[3].NombreCompleto)}  |-----┘
+                               ├----- |{nombreSemifinalista4}  |-----┘
     ┌{border}┐     |      └----------------------┘     
-    |{AjustarNombre(ListaDeCaballeros[7].NombreCompleto)}|-----┘
+    |{AjustarNombre(jugador.NombreCompleto)}|-----┘
     └{border}┘ 
     ");
     }
