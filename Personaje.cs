@@ -18,10 +18,10 @@ public class Personaje{
     private int fuerza;
     private int nivel;
     private int armadura;
-    private int salud;
+    private float salud;
 
 
-    public Personaje(int id, string  casa, string   nombreCompleto, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, int salud)
+    public Personaje(int id, string  casa, string   nombreCompleto, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, float salud)
     {
         this.ID = id;
         this.Casa = casa;
@@ -45,7 +45,7 @@ public class Personaje{
     public int Fuerza { get => fuerza; set => fuerza = value; }
     public int Nivel { get => nivel; set => nivel = value; }
     public int Armadura { get => armadura; set => armadura = value; }
-    public int Salud { get => salud; set => salud = value; }
+    public float Salud { get => salud; set => salud = value; }
 
     public void MostraPersonaje(){
         if (this == null) {
@@ -61,7 +61,7 @@ public class Personaje{
         Console.WriteLine("\t\tFuerza: "+Fuerza);
         Console.WriteLine("\t\tNivel: "+Nivel);
         Console.WriteLine("\t\tArmadura: "+Armadura);
-        Console.WriteLine("\t\tSalud: "+Salud);
+        Console.WriteLine($"\t\tSalud: {Salud:F2}");
     }
 }
 
@@ -77,7 +77,7 @@ public static class FabricaDePersonajes{
         int fuerza = Utilidades.ObtenerIntRandom(1, 11);
         int nivel = 1;
         int armadura = Utilidades.ObtenerIntRandom(1, 11);
-        int salud = 100;
+        float salud = 100.00f;
 
         return new Personaje(id, casa, nombreCompleto, edad, velocidad, destreza, fuerza, nivel, armadura, salud);
     }
