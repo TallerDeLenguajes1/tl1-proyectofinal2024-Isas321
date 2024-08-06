@@ -6,23 +6,37 @@ namespace EspacioJuegoDeCaballeros;
         {
             Personaje ganador;
             int carrera = 1;
-            do
-            {
-                Console.WriteLine($"\nEnfrentamiento [{carrera++}]");
-                Console.WriteLine($"\n* Turno de {caballero1.NombreCompleto}");
-                if (RealizarAtaque(caballero1, caballero2))
+            if(caballero1==null && caballero2!=null){
+                Console.WriteLine($"\nEl caballero {caballero2.NombreCompleto} es el ganador");
+                return caballero2;
+            }
+
+            if(caballero2==null && caballero1!=null){
+                Console.WriteLine($"\nEl caballero {caballero1.NombreCompleto} es el ganador");
+                return caballero1;
+            }
+
+            if(caballero1!=null && caballero2!=null){
+                do
                 {
-                    return caballero1;
-                }
-                Console.WriteLine($"\n* Turno de {caballero2.NombreCompleto}");
-                if (RealizarAtaque(caballero2, caballero1))
-                {
-                    return caballero2;
-                }
-            } while (carrera <=3 && caballero1.Salud>0 && caballero2.Salud>0);
-            ganador = DeterminarGanador(caballero1, caballero2);
-            
-            return ganador;
+                    Console.WriteLine($"\nEnfrentamiento [{carrera++}]");
+                    Console.WriteLine($"\n* Turno de {caballero1.NombreCompleto}");
+                    if (RealizarAtaque(caballero1, caballero2))
+                    {
+                        return caballero1;
+                    }
+                    Console.WriteLine($"\n* Turno de {caballero2.NombreCompleto}");
+                    if (RealizarAtaque(caballero2, caballero1))
+                    {
+                        return caballero2;
+                    }
+                } while (carrera <=2 && caballero1.Salud>0 && caballero2.Salud>0);
+                ganador = DeterminarGanador(caballero1, caballero2);
+                
+                return ganador;
+            } else{
+                return null;
+            }
         }
 
         private static bool RealizarAtaque(Personaje atacante, Personaje defensor)
