@@ -119,10 +119,10 @@ public class TablaDePosiciones{
             ? AjustarNombre(semifinalistas[1].NombreCompleto) 
             : " ";
 
-    string nombreSemifinalista3 = semifinalistas[1] != null 
+    string nombreSemifinalista3 = semifinalistas[2] != null 
             ? AjustarNombre(semifinalistas[2].NombreCompleto) 
             : " ";
-    string nombreSemifinalista4 = semifinalistas[1] != null 
+    string nombreSemifinalista4 = semifinalistas[3] != null 
             ? AjustarNombre(semifinalistas[3].NombreCompleto) 
             : " ";
 
@@ -175,10 +175,10 @@ public class TablaDePosiciones{
             ? AjustarNombre(semifinalistas[1].NombreCompleto) 
             : " ";
 
-    string nombreSemifinalista3 = semifinalistas[1] != null 
+    string nombreSemifinalista3 = semifinalistas[2] != null 
             ? AjustarNombre(semifinalistas[2].NombreCompleto) 
             : " ";
-    string nombreSemifinalista4 = semifinalistas[1] != null 
+    string nombreSemifinalista4 = semifinalistas[3] != null 
             ? AjustarNombre(semifinalistas[3].NombreCompleto) 
             : " ";
 
@@ -238,10 +238,10 @@ public class TablaDePosiciones{
             ? AjustarNombre(semifinalistas[1].NombreCompleto) 
             : " ";
 
-    string nombreSemifinalista3 = semifinalistas[1] != null 
+    string nombreSemifinalista3 = semifinalistas[2] != null 
             ? AjustarNombre(semifinalistas[2].NombreCompleto) 
             : " ";
-    string nombreSemifinalista4 = semifinalistas[1] != null 
+    string nombreSemifinalista4 = semifinalistas[3] != null 
             ? AjustarNombre(semifinalistas[3].NombreCompleto) 
             : " ";
 
