@@ -1,10 +1,6 @@
-
-using System.Text.Json;
 using EspacioCasasJuegoDeTronos;
 using consumoApiService;
 namespace EspacioPersonaje;
-
-//  fabrica de personajes, estadisticas, combate Daño provocado con if no puede ser negativo
 
 public class Personaje{
     //Datos
@@ -101,38 +97,3 @@ public static class CasasNobles{
     }
 }
 
-
-public static class PersonajesJson{
-    public static void GuardarPersonajes(List<Personaje> personajes, string nombreArchivo){
-        string jsonPersonajes = JsonSerializer.Serialize(personajes);
-        File.WriteAllText(nombreArchivo, jsonPersonajes);
-        // Console.WriteLine("Exito al guardar en: " + nombreArchivo);
-    }
-
-    public static async Task<List<Personaje>> LeerPersonajesAsync(string nombreArchivo){
-        if (ExistenPersonajes(nombreArchivo)){
-            string jsonContenido = File.ReadAllText(nombreArchivo);
-            List<Personaje> personajes = JsonSerializer.Deserialize<List<Personaje>>(jsonContenido);
-            return personajes;
-        }
-        else{
-            List<Personaje> personajes = new List<Personaje>();
-            List<Casas> casas = await CasasNobles.ObtenerCasasNobles();
-   
-            for (int i = 0; i < casas.Count; i++){
-                personajes.Add(FabricaDePersonajes.CrearPersonaje(i+1, casas[i].nombreDeCasa, casas[i].miembros[0].nombreCompleto));
-            }
-            // Console.WriteLine("\nFalta de datos...");
-            // Console.WriteLine("Se crearon: "+casas.Count+" casas nobles");
-            GuardarPersonajes(personajes, nombreArchivo);
-            return personajes;
-        }
-    }
-
-    public static bool ExistenPersonajes(string nombreArchivo){
-        return File.Exists(nombreArchivo) && new FileInfo(nombreArchivo).Length > 0;
-    }
-}
-
-//Solo civilizaciones: 
-//https://aoe2-data-api.herokuapp.com/civs includeUnits=false&includeTechs=false&includeBuildings=false
