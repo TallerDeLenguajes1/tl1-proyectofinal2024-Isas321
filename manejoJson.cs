@@ -4,32 +4,46 @@ using EspacioPersonaje;
 namespace EspacioManejoJson;
 
 
-public class ManejoDeGanadores
+public class HistorialJson
 {
-    public string AbrirArchivoGanadores(string nombreArchivo)
+    public static List<Ganador> LeerGanadores(string nombreArchivo)
     {
-        string documento;
-        using (var archivoAbierto = new FileStream(nombreArchivo, FileMode.Open))
+        if (ExistenGanadores(nombreArchivo))
         {
-            using (var strReader = new StreamReader(archivoAbierto))
+            using (var archivoAbierto = new FileStream(nombreArchivo, FileMode.Open))
             {
-                documento = strReader.ReadToEnd();
-                archivoAbierto.Close();
+                using (var strReader = new StreamReader(archivoAbierto))
+                {
+                    string jsonContenido = strReader.ReadToEnd();
+                    List<Ganador> ganadores = JsonSerializer.Deserialize<List<Ganador>>(jsonContenido);
+                    archivoAbierto.Close();
+                    return ganadores;
+                }
             }
         }
-        return documento;
+        else
+        {
+            Console.WriteLine("No hay ganadores registrados");
+            return new List<Ganador>();
+        }
     }
 
-    public void GuardarGanadoresEnJson(string nombreArchivo, string datos)
+
+    public static void GuardarGanador(string nombreArchivo, List<Ganador> ganadores)
+{
+    string jsonGanadores = JsonSerializer.Serialize(ganadores);
+    using (var archivo = new FileStream(nombreArchivo, FileMode.Create))
     {
-        using (var archivo = new FileStream(nombreArchivo, FileMode.Create))
+        using (var strWriter = new StreamWriter(archivo))
         {
-            using (var strWriter = new StreamWriter(archivo))
-            {
-                strWriter.WriteLine("{0}", datos);
-                strWriter.Close();
-            }
+            strWriter.Write(jsonGanadores);
         }
+    }
+}
+
+    public static  bool ExistenGanadores(string nombreArchivo)
+    {
+        return File.Exists(nombreArchivo) && new FileInfo(nombreArchivo).Length > 0;
     }
 }
 
@@ -74,5 +88,37 @@ public static class PersonajesJson{
         {
             Console.WriteLine("El archivo no existe.");
         }
+    }
+}
+
+public class Ganador
+{
+    private string nombre;
+    private string casa;
+    private float salud;
+
+    public Ganador(string nombre, string casa, float salud)
+    {
+        this.Nombre = nombre;
+        this.Casa = casa;
+        this.Salud = salud;
+    }
+
+    public string Nombre { get => nombre; set => nombre = value; }
+    public string Casa { get => casa; set => casa = value; }
+    public float Salud { get => salud; set => salud = value; }
+
+    public void MostrarGanador()
+    {
+        if (this == null) 
+        {
+            Console.WriteLine("No hay información del ganador.");
+            return;
+        }
+
+        Console.WriteLine("\t\tGanador");
+        Console.WriteLine("\t\tNombre: " + Nombre);
+        Console.WriteLine("\t\tCasa: " + Casa);
+        Console.WriteLine($"\t\tSalud: {Salud:F2}");
     }
 }
