@@ -228,19 +228,39 @@ class Program
                   
                     break;
                 case 3:
-                    Console.WriteLine("\nOpcion 3");
+                    Console.WriteLine("Desea eliminar y cargar nuevos caballeros?");
+                    Console.Write(" Si (s) / No (cualquier tecla): ");
+                    confirmacion = Console.ReadKey().KeyChar; 
+
+                    if(confirmacion == 'S' || confirmacion == 's'){
+                        PersonajesJson.EliminarPersonajes("personajes.json");
+                        personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
+                        if(PersonajesJson.ExistenPersonajes("personajes.json")){
+                            Console.WriteLine("\nCaballeros cargados con exito!\n");
+
+                            Console.WriteLine("Desea ver los nuevos caballeros?");
+                            Console.Write(" Si (s) / No (cualquier tecla): ");
+                            confirmacion = Console.ReadKey().KeyChar;  
+                            if(confirmacion == 'S' || confirmacion == 's'){
+                                Console.WriteLine("");
+                                foreach (var caballero in personajes)
+                                {
+                                    Console.WriteLine("");
+                                    caballero.MostraPersonaje();
+                                }
+                            }
+                        }
+                        Console.Write("\n\nPresione cualquier tecla para al menu principal...");
+                        Console.ReadKey();
+                        Console.Clear();
+                    } else{
+                        Console.WriteLine("\n\nVolviendo al menu principal...\n\n");
+                        await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(2));
+                    }
                     break;
                 case 4:
-                    //Funcion que elimina archivo JSON y crea uno nuevo
-
-                    Console.WriteLine("Nuevos Personajes creados.");
-                    Console.WriteLine("Presione enter para continuar");
-                    TablaDePosiciones.Semifinal(personajes);
-                    Console.WriteLine("*************************");
-                    TablaDePosiciones.Final(personajes);
-                    Console.WriteLine("*************************");
-                    TablaDePosiciones.TablaCompleta(personajes);
-
+                    Console.WriteLine("Historial de ganadores");
+                    Console.Write("\n\nPresione cualquier tecla para al menu principal...");
                     Console.ReadKey();
                     Console.Clear();
                     break;
