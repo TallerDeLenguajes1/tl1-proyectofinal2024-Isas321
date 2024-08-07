@@ -19,19 +19,18 @@ public class Personaje{
 
     public Personaje(int id, string  casa, string   nombreCompleto, int edad, int velocidad, int destreza, int fuerza, int nivel, int armadura, float salud)
     {
-        this.ID = id;
-        this.Casa = casa;
-        this.NombreCompleto =  nombreCompleto;
-        this.Edad = edad;
-        this.Velocidad = velocidad;
-        this.Destreza = destreza;
-        this.Fuerza = fuerza;
-        this.Nivel = nivel;
-        this.Armadura = armadura;
-        this.Salud = salud;
+        ID = id;
+        Casa = casa;
+        NombreCompleto =  nombreCompleto;
+        Edad = edad;
+        Velocidad = velocidad;
+        Destreza = destreza;
+        Fuerza = fuerza;
+        Nivel = nivel;
+        Armadura = armadura;
+        Salud = salud;
     }
 
-    //Cuidar los set y get porque lo publico pueden acceder de cualquier parte
     public int ID { get => id; set => id = value; }
     public string  Casa { get => casa; set => casa = value; }
     public string   NombreCompleto { get =>  nombreCompleto; set =>  nombreCompleto = value; }
