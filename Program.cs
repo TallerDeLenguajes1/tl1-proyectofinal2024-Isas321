@@ -2,12 +2,13 @@
 using System;
 using System.Threading.Tasks;
 using consumoApiService;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using EspacioImagenes;
 using EspacioPersonaje;
 using EspacioInterfaz;
 using EspacioJuegoDeCaballeros;
 using EspacioManejoJson;
-using System.Text.RegularExpressions;
 //Task es una tarea, una operacion asincronicas
 class Program
 {
@@ -105,7 +106,7 @@ class Program
                     } while (string.IsNullOrEmpty(nombreDeCasa));
 
                     jugador = FabricaDePersonajes.CrearPersonaje(13, nombreDeCasa, nombreJugador);
-                    jugador.Salud+=20;
+                    jugador.Salud+=2000;
 
                     Console.WriteLine($"\n\nTus datos y caracteristicas: \n");
                     jugador.MostraPersonaje();
@@ -220,6 +221,39 @@ class Program
                      if(ganador==jugador){                    
                         Console.Write("\nGanaste el torneo! \n");
                         ganador.MostraPersonaje();
+                        Console.WriteLine("\n\n");
+
+                        Ganador gana = new Ganador(ganador.NombreCompleto, ganador.Casa, ganador.Salud);
+                        gana.MostrarGanador();
+                        Console.WriteLine("\npatricia \n");
+                        List<Ganador> ganadoresObtenidos = HistorialJson.LeerGanadores("historial.json");
+                        ganadoresObtenidos.Add(gana);
+
+                        foreach (var item in ganadoresObtenidos)
+                        {   
+                            Console.WriteLine("\ninfo + \n");
+                            item.MostrarGanador();
+                        }
+
+                        Console.WriteLine("\ninfo importante \n");
+
+                        HistorialJson.GuardarGanador("historial.json", ganadoresObtenidos);
+
+                        Console.WriteLine("\n\n");
+
+
+
+
+
+                        //funcion que lee la lista de ganadores la ordena y las vuelve a cargar
+
+                        //la lista ordenada cargarla al json
+
+                        //guardar ganadores en el json solo 10 ganadores -> hacer esto primero
+
+
+
+                       
                     }
                     
                     personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
@@ -260,6 +294,15 @@ class Program
                     break;
                 case 4:
                     Console.WriteLine("Historial de ganadores");
+                    List<Ganador> ListaDeGanadores;
+                    ListaDeGanadores = HistorialJson.LeerGanadores("historial.json");
+                    if (ListaDeGanadores != null && ListaDeGanadores.Count > 0)
+                    {
+                        foreach (var Ganador in ListaDeGanadores)
+                        {
+                            Ganador.MostrarGanador();
+                        }
+                    }
                     Console.Write("\n\nPresione cualquier tecla para al menu principal...");
                     Console.ReadKey();
                     Console.Clear();
