@@ -85,7 +85,7 @@ namespace EspacioJuegoDeCaballeros;
       int ataque = atacante.Destreza * atacante.Fuerza * atacante.Nivel;
       int efectividad = Utilidades.ObtenerIntRandom(1, 101);
       int defensa = defensor.Armadura * defensor.Velocidad;
-      Console.WriteLine($"Efectividad de {atacante.NombreCompleto} es de: {efectividad}");
+    //   Console.WriteLine($"Efectividad de {atacante.NombreCompleto} es de: {efectividad}");
       const int constanteDeAjuste = 50;
       float danioProvocado = ((float)((ataque * efectividad) - defensa)) / constanteDeAjuste;
 
