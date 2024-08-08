@@ -51,7 +51,6 @@ public static class PersonajesJson{
     public static void GuardarPersonajes(List<Personaje> personajes, string nombreArchivo){
         string jsonPersonajes = JsonSerializer.Serialize(personajes);
         File.WriteAllText(nombreArchivo, jsonPersonajes);
-        // Console.WriteLine("Exito al guardar en: " + nombreArchivo);
     }
 
     public static async Task<List<Personaje>> LeerPersonajesAsync(string nombreArchivo){
@@ -67,8 +66,6 @@ public static class PersonajesJson{
             for (int i = 0; i < casas.Count; i++){
                 personajes.Add(FabricaDePersonajes.CrearPersonaje(i+1, casas[i].nombreDeCasa, casas[i].miembros[0].nombreCompleto));
             }
-            // Console.WriteLine("\nFalta de datos...");
-            // Console.WriteLine("Se crearon: "+casas.Count+" casas nobles");
             GuardarPersonajes(personajes, nombreArchivo);
             return personajes;
         }
@@ -99,9 +96,9 @@ public class Ganador
 
     public Ganador(string nombre, string casa, float salud)
     {
-        this.Nombre = nombre;
-        this.Casa = casa;
-        this.Salud = salud;
+        Nombre = nombre;
+        Casa = casa;
+        Salud = salud;
     }
 
     public string Nombre { get => nombre; set => nombre = value; }
