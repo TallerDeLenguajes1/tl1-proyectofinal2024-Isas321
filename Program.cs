@@ -9,7 +9,6 @@ using EspacioPersonaje;
 using EspacioInterfaz;
 using EspacioJuegoDeCaballeros;
 using EspacioManejoJson;
-//Task es una tarea, una operacion asincronicas
 class Program
 {
     static async Task Main(string[] args)
@@ -35,18 +34,26 @@ class Program
                     mostrarCaballeros(personajes);
                     EsperarTeclaYLimpiarPantalla();
                     break;
+
+
                 case 2:
-                    char confirmacion = 'n';
+                    char confirmacion = 'n', verParticipantes='n';
                     List<Personaje> participantes, semifinalistas, finalistas;
                     Personaje semifinalista1, semifinalista2, semifinalista3, semifinalista4;
                     Personaje finalista1, finalista2, ganador, jugador = null;
 
                     participantes = ObtenerPersonajesAleatorios(personajes, 7);
+                    
+                    Console.Write("\nDesea ver los datos y caracteristicas de los caballeros que participaran? ");
+                    Console.Write("\nSi (s) / No (cualquier tecla)");
+                    verParticipantes = Console.ReadKey().KeyChar;
+                    if(verParticipantes=='s' || verParticipantes=='S'){
+                        Console.WriteLine("Los caballeros que participan en este torneo son:");
+                        mostrarCaballeros(participantes);
+                    }
 
-                    Console.WriteLine("Los caballeros que participan en este torneo son:");
-                    mostrarCaballeros(participantes);
                     jugador = SolicitarDatosJugador(personajes);
-                    jugador.Salud += 2000;
+                    jugador.Salud += 2;
 
                     Console.WriteLine($"\n\nTus datos y caracteristicas: \n");
                     jugador.MostraPersonaje();
@@ -155,6 +162,9 @@ class Program
                     EsperarTeclaYLimpiarPantalla();
 
                     break;
+
+
+
                 case 3:
                     Console.WriteLine("Desea eliminar y cargar nuevos caballeros?");
                     Console.Write(" Si (s) / No (cualquier tecla): ");
@@ -184,6 +194,9 @@ class Program
                         await Interfaz.EsperarPorTeclaOPorTiempoAgotado(TimeSpan.FromSeconds(2));
                     }
                     break;
+
+
+
                 case 4:
                     Console.WriteLine("Historial de ganadores");
                     List<Ganador> ListaDeGanadores;
@@ -201,13 +214,16 @@ class Program
                     }
                     EsperarTeclaYLimpiarPantalla();
                     break;
-                case 5:
-                    Console.Clear();
-                    Console.WriteLine("Muchas gracias por elegirnos.");
-                    break;
             }
 
         } while (menu != 5);
+        Console.Clear();
+        Console.WriteLine("\nMuchas gracias por elegirnos.\n");
+
+
+
+
+
 
         static void mostrarCaballeros(List<Personaje> participantes)
         {
@@ -217,6 +233,9 @@ class Program
                 caballero.MostraPersonaje();
             }
         }
+
+
+
 
         static char ConsueloYConfirmacionFinal()
         {
@@ -233,12 +252,17 @@ class Program
             return confirmacion;
         }
 
+
+
         static void EsperarTeclaYLimpiarPantalla()
         {
-            Console.Write("\n\nPresione cualquier tecla para al menu principal...");
+            Console.Write("\n\nPresione cualquier tecla para ir al menu principal...");
             Console.ReadKey();
             Console.Clear();
         }
+
+
+
 
         static Personaje SolicitarDatosJugador(List<Personaje> personajes)
         {
@@ -295,6 +319,10 @@ class Program
             return FabricaDePersonajes.CrearPersonaje(13, nombreDeCasa, nombreJugador);
         }
 
+
+
+
+
         static void GuardarSiGanoYSuperaVida(Personaje ganador, Personaje jugador)
         {
             if (ganador == jugador)
@@ -314,6 +342,10 @@ class Program
         }
     }
 
+
+
+
+
     public static List<Personaje> ObtenerPersonajesAleatorios(List<Personaje> listaPersonajes, int cantidad)
     {
         List<Personaje> participantes = new List<Personaje>();
@@ -331,6 +363,9 @@ class Program
 
         return participantes;
     }
+
+
+
 
     static bool EsNombreValido(string nombre)
     {
