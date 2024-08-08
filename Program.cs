@@ -37,23 +37,24 @@ class Program
 
 
                 case 2:
-                    char confirmacion = 'n', verParticipantes='n';
+                    char confirmacion = 'n', verParticipantes = 'n';
                     List<Personaje> participantes, semifinalistas, finalistas;
                     Personaje semifinalista1, semifinalista2, semifinalista3, semifinalista4;
                     Personaje finalista1, finalista2, ganador, jugador = null;
 
                     participantes = ObtenerPersonajesAleatorios(personajes, 7);
-                    
+
                     Console.Write("\nDesea ver los datos y caracteristicas de los caballeros que participaran? ");
                     Console.Write("\nSi (s) / No (cualquier tecla)");
                     verParticipantes = Console.ReadKey().KeyChar;
-                    if(verParticipantes=='s' || verParticipantes=='S'){
+                    if (verParticipantes == 's' || verParticipantes == 'S')
+                    {
                         Console.WriteLine("Los caballeros que participan en este torneo son:");
                         mostrarCaballeros(participantes);
                     }
 
                     jugador = SolicitarDatosJugador(personajes);
-                    jugador.Salud += 2;
+                    // jugador.Salud += 2000;
 
                     Console.WriteLine($"\n\nTus datos y caracteristicas: \n");
                     jugador.MostraPersonaje();
@@ -93,6 +94,8 @@ class Program
                     semifinalistas.Add(semifinalista3);
                     semifinalistas.Add(semifinalista4);
 
+                    semifinalistas = BonificacionDeVida(semifinalistas);
+
                     if (confirmacion != 'S' && confirmacion != 's')
                     {
                         Console.Write("\n\nPresione una tecla para seguir a la semifinal\n");
@@ -129,6 +132,8 @@ class Program
 
                     finalistas.Add(finalista1);
                     finalistas.Add(finalista2);
+
+                    finalistas = BonificacionDeVida(finalistas);
 
                     if (confirmacion != 'S' && confirmacion != 's')
                     {
@@ -270,7 +275,7 @@ class Program
             string nombreJugador = "", nombreDeCasa = "";
             do
             {
-                Console.Write("\nIngrese su nombre: ");
+                Console.Write("\n\n\nIngrese su nombre: ");
                 nombreJugador = Console.ReadLine();
 
                 if (!EsNombreValido(nombreJugador))
@@ -339,6 +344,15 @@ class Program
 
                 HistorialJson.GuardarGanador("historial.json", top10Ganadores);
             }
+        }
+
+        static List<Personaje> BonificacionDeVida(List<Personaje> caballeros)
+        {
+            foreach (var caballero in caballeros)
+            {
+                caballero.Salud += 10;
+            }
+            return caballeros;
         }
     }
 
