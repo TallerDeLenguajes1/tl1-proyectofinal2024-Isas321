@@ -40,64 +40,13 @@ class Program
                     List<Personaje> participantes, semifinalistas, finalistas;
                     Personaje semifinalista1, semifinalista2, semifinalista3, semifinalista4;
                     Personaje finalista1, finalista2, ganador, jugador = null;
-                    int seEncuentra = 0;
 
                     participantes = ObtenerPersonajesAleatorios(personajes, 7);
 
                     Console.WriteLine("Los caballeros que participan en este torneo son:");
                     mostrarCaballeros(participantes);
-
-                    string nombreJugador = "", nombreDeCasa = "";
-                    do
-                    {
-                        Console.Write("\nIngrese su nombre: ");
-                        nombreJugador = Console.ReadLine();
-
-                        if (!EsNombreValido(nombreJugador))
-                        {
-                            Console.WriteLine("Nombre inválido. Por favor, ingrese solo letras.");
-                            nombreJugador = "";
-                        }
-
-                        if (nombreJugador.Length > 19)
-                        {
-                            Console.WriteLine("Nombre demasiado largo.");
-                            nombreJugador = "";
-                        }
-
-                        seEncuentra = 0;
-
-                        foreach (var caballero in personajes)
-                        {
-                            if (caballero.NombreCompleto == nombreJugador)
-                            {
-                                Console.WriteLine("El Nombre que deseas ya lo tiene otro caballero");
-                                seEncuentra = 1;
-                                break;
-                            }
-                        }
-
-                    } while (string.IsNullOrEmpty(nombreJugador) || seEncuentra == 1);
-
-                    do
-                    {
-                        Console.Write("\nIngrese el nombre de su casa: ");
-                        nombreDeCasa = Console.ReadLine();
-
-                        if (!EsNombreValido(nombreJugador))
-                        {
-                            Console.WriteLine("Nombre inválido. Por favor, ingrese solo letras.");
-                            nombreDeCasa = "";
-                        }
-                        if (nombreJugador.Length > 19)
-                        {
-                            Console.WriteLine("Nombre demasiado largo.");
-                            nombreJugador = "";
-                        }
-                    } while (string.IsNullOrEmpty(nombreDeCasa));
-
-                    jugador = FabricaDePersonajes.CrearPersonaje(13, nombreDeCasa, nombreJugador);
-                    jugador.Salud += 2;
+                    jugador = SolicitarDatosJugador(personajes);
+                    jugador.Salud += 2000;
 
                     Console.WriteLine($"\n\nTus datos y caracteristicas: \n");
                     jugador.MostraPersonaje();
@@ -127,7 +76,7 @@ class Program
 
                     if (semifinalista4 != jugador)
                     {
-                        confirmacion=ConsueloYConfirmacionFinal();
+                        confirmacion = ConsueloYConfirmacionFinal();
                     }
 
                     semifinalistas = new List<Personaje>();
@@ -176,7 +125,7 @@ class Program
 
                     if (confirmacion != 'S' && confirmacion != 's')
                     {
-                        Console.Write("\n\nPresione una tecla para seguir a lafinal\n");
+                        Console.Write("\n\nPresione una tecla para seguir a la final\n");
                         await Interfaz.EsperarPorTecla();
                     }
 
@@ -189,7 +138,7 @@ class Program
                     {
                         if (ganador != jugador)
                         {
-                            confirmacion=ConsueloYConfirmacionFinal();
+                            confirmacion = ConsueloYConfirmacionFinal();
                         }
                     }
                     if (confirmacion != 'S' && confirmacion != 's')
@@ -200,32 +149,7 @@ class Program
                     Console.WriteLine("\n\n\n**** TABLA COMPLETA DEL TORNEO ***\n");
                     TablaDePosiciones.TablaCompleta1(jugador, participantes, semifinalistas, finalistas, ganador);
 
-                    if (ganador == jugador)
-                    {
-                        Console.Write("\nGanaste el torneo! \n");
-                        ganador.MostraPersonaje();
-                        Console.WriteLine("\n\n");
-
-                        Ganador gana = new Ganador(ganador.NombreCompleto, ganador.Casa, ganador.Salud);
-                        gana.MostrarGanador();
-                        Console.WriteLine("\npatricia \n");
-                        List<Ganador> ganadoresObtenidos = HistorialJson.LeerGanadores("historial.json");
-                        ganadoresObtenidos.Add(gana);
-
-                        ganadoresObtenidos = ganadoresObtenidos.OrderByDescending(g => g.Salud).ToList();
-
-                        List<Ganador> top10Ganadores = ganadoresObtenidos.Take(10).ToList();
-
-                        foreach (var item in top10Ganadores)
-                        {
-                            Console.WriteLine("\ninfo + \n");
-                            item.MostrarGanador();
-                        }
-
-                        HistorialJson.GuardarGanador("historial.json", top10Ganadores);
-
-                        Console.WriteLine("\n\n");
-                    }
+                    GuardarSiGanoYSuperaVida(ganador, jugador);
 
                     personajes = await PersonajesJson.LeerPersonajesAsync("personajes.json");
                     EsperarTeclaYLimpiarPantalla();
@@ -263,14 +187,17 @@ class Program
                 case 4:
                     Console.WriteLine("Historial de ganadores");
                     List<Ganador> ListaDeGanadores;
+                    int numero = 1;
                     ListaDeGanadores = HistorialJson.LeerGanadores("historial.json");
                     if (ListaDeGanadores != null && ListaDeGanadores.Count > 0)
                     {
                         foreach (var Ganador in ListaDeGanadores)
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine($"\n\t\t# Puesto N° {numero++}");
                             Ganador.MostrarGanador();
                         }
+                    } else{
+                        Console.WriteLine("\nNo hay ganadores del torneo\n");
                     }
                     EsperarTeclaYLimpiarPantalla();
                     break;
@@ -311,6 +238,79 @@ class Program
             Console.Write("\n\nPresione cualquier tecla para al menu principal...");
             Console.ReadKey();
             Console.Clear();
+        }
+
+        static Personaje SolicitarDatosJugador(List<Personaje> personajes)
+        {
+            int seEncuentra;
+            string nombreJugador = "", nombreDeCasa = "";
+            do
+            {
+                Console.Write("\nIngrese su nombre: ");
+                nombreJugador = Console.ReadLine();
+
+                if (!EsNombreValido(nombreJugador))
+                {
+                    Console.WriteLine("Nombre inválido. Por favor, ingrese solo letras.");
+                    nombreJugador = "";
+                }
+
+                if (nombreJugador.Length > 19)
+                {
+                    Console.WriteLine("Nombre demasiado largo.");
+                    nombreJugador = "";
+                }
+
+                seEncuentra = 0;
+
+                foreach (var caballero in personajes)
+                {
+                    if (caballero.NombreCompleto == nombreJugador)
+                    {
+                        Console.WriteLine("El Nombre que deseas ya lo tiene otro caballero");
+                        seEncuentra = 1;
+                        break;
+                    }
+                }
+
+            } while (string.IsNullOrEmpty(nombreJugador) || seEncuentra == 1);
+
+            do
+            {
+                Console.Write("\nIngrese el nombre de su casa: ");
+                nombreDeCasa = Console.ReadLine();
+
+                if (!EsNombreValido(nombreDeCasa))
+                {
+                    Console.WriteLine("Nombre inválido. Por favor, ingrese solo letras.");
+                    nombreDeCasa = "";
+                }
+                if (nombreDeCasa.Length > 19)
+                {
+                    Console.WriteLine("Nombre demasiado largo.");
+                    nombreDeCasa = "";
+                }
+            } while (string.IsNullOrEmpty(nombreDeCasa));
+
+            return FabricaDePersonajes.CrearPersonaje(13, nombreDeCasa, nombreJugador);
+        }
+
+        static void GuardarSiGanoYSuperaVida(Personaje ganador, Personaje jugador)
+        {
+            if (ganador == jugador)
+            {
+                Console.Write("\nGanaste el torneo! \n");
+                Ganador gana = new Ganador(ganador.NombreCompleto, ganador.Casa, ganador.Salud);
+                gana.MostrarGanador();
+
+                List<Ganador> ganadoresObtenidos = HistorialJson.LeerGanadores("historial.json");
+                ganadoresObtenidos.Add(gana);
+                ganadoresObtenidos = ganadoresObtenidos.OrderByDescending(g => g.Salud).ToList();
+
+                List<Ganador> top10Ganadores = ganadoresObtenidos.Take(10).ToList();
+
+                HistorialJson.GuardarGanador("historial.json", top10Ganadores);
+            }
         }
     }
 
