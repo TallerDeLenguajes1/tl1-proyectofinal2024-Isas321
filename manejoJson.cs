@@ -23,7 +23,6 @@ public class HistorialJson
         }
         else
         {
-            Console.WriteLine("No hay ganadores registrados");
             return new List<Ganador>();
         }
     }
@@ -112,8 +111,6 @@ public class Ganador
             Console.WriteLine("No hay información del ganador.");
             return;
         }
-
-        Console.WriteLine("\t\tGanador");
         Console.WriteLine("\t\tNombre: " + Nombre);
         Console.WriteLine("\t\tCasa: " + Casa);
         Console.WriteLine($"\t\tSalud: {Salud:F2}");
