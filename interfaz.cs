@@ -35,9 +35,6 @@ public class Interfaz{
         Task tareaDePresiónDeTecla = Task.Run(() => Console.ReadKey(true));
         Task tareaDeEspera = Task.Delay(tiempoDeEspera);
         Task tareaCompletada = await Task.WhenAny(tareaDePresiónDeTecla, tareaDeEspera);
-        //  await se usa para esperar de manera asíncrona a que se complete la tarea devuelta por Task.WhenAny. 
-        //  La ejecución del método se suspende aquí y se reanuda cuando una de las tareas 
-        //  (tareaPresionDeTecla o tareaDeEspera) se haya completado.
     }
 
         public static async Task EsperarPorTecla()
